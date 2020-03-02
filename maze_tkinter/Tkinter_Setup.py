@@ -77,7 +77,8 @@ class TkinterWindow:
 
     def generate(self, *args):
         if str(self.gene_butt.cget("state")) == "normal":
-            # Vars.AREA = math.floor((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+            # Vars.
+            # = math.floor((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
             self.master.destroy()
         else:
             pass

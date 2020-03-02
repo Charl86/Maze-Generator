@@ -82,6 +82,17 @@ def main_loop():
     Vars.grid[0][0].walls["left"].on = False
     Vars.grid[-1][-1].walls["right"].on = False
 
+    # Some logging:
+    print(f"Square 'AREA': {Vars.AREA}.")
+    print(f"Hori COLS Length: {Vars.AREA * Vars.COLS}.")
+    print(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
+    print(f"BORDER: {Vars.border.x, Vars.border.y}.")
+    print(f"BORDER Dimensions: {Vars.border.horizontal, Vars.border.vertical}.")
+    print(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
+    print(f"End Cell: {Vars.grid[-1][-1].spaced_out_x, Vars.grid[-1][-1].spaced_out_y}.")
+    # print(f"Star Cell: {Vars.grid[0][0].x + Vars.border.x, Vars.grid[0][0].y + Vars.border.y}.")
+    # print(f"End Cell: {Vars.grid[-1][-1].x + Vars.border.x, Vars.grid[-1][-1].y + Vars.border.y}.")
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
