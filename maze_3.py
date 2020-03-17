@@ -9,19 +9,45 @@ from border import Border
 from maze_tkinter import Tkinter_Setup as Ts
 
 
+# This function will create 'the_grid' variable, which will be a 2D-array
+# The amount of sub-arrays inside the 'the_grid' variable will be 'Vars.ROWS',
+# and each sub-array will have 'Vars.COLS' amount of 'Cell' objects.
+# In the end, this function will return the 'the_grid' 2D-Array, containing
+# arrays, the latter which contain 'Cell' objects.
 def create_cells():
-    the_grid = []
-    nth_row = []
+    the_grid = []  # Creation of the 2D-array.
+    nth_row = []  # Creation of the nth-array to-be-appended to 'the_grid'.
 
+    # For each array in 'Vars.ROWS' amount:
     for row in range(Vars.ROWS):
-        for col in range(Vars.COLS):
+        for col in range(Vars.COLS):  # For each 'Cell' object per array:
+            # We create a new 'Cell' object, whose coordinates are its
+            # index position within the 'the_grid' 2D-array:
             new_cell = Cell(col, row)
+
+            # Then we append it to the nth-array within the 'the_grid' 2D-array:
             nth_row.append(new_cell)
+
+        # Once there is a 'Vars.COLS' amount of 'Cell' object in a given
+        # nth-array, we append this array to the 'the_grid' 2D-array:
         the_grid.append(nth_row)
+
+        # Then we clear this array, in order to add new 'Cell' objects:
         nth_row = []
+
+    # Once there is a 'Vars.ROWS' amount of arrays in 'the_grid', we return
+    # this 2D-array:
     return the_grid
 
 
+# This function can be divided into 3 parts:
+# 1) The screen will be fully painted with the 'Colors.COLORS' variable,
+# covering anything that was painted before. The frames per second will
+# be set to the 'Pyv.SPEED' variable, and a border, coming from the 'Border'
+# object, will ultimately draw itself on the screen, given that the coordinates
+# of the top-left corner of the border object aren't (0, 0).
+#
+# 2)
 def draw():
 
     Pyv.SCREEN.fill(Colors.WHITE)
