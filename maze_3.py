@@ -47,33 +47,55 @@ def create_cells():
 # object, will ultimately draw itself on the screen, given that the coordinates
 # of the top-left corner of the border object aren't (0, 0).
 #
-# 2)
+# 2) The actual maze-generation algorithm. You could swap this part with any other
+# maze generation algorithm and in theory the program would work just fine. The
+# algorithm used in this program is Wilson's, (...).
+# 3) Display all the objects on the screen that were drawn before or during the
+# procedure of the algorithm.
 def draw():
 
+    # 1rst Part: Repainting the screen, setting the frames per second
     Pyv.SCREEN.fill(Colors.WHITE)
     Pyv.FPS.tick(Pyv.SPEED)
 
+    # and drawing the border.
     Vars.border.draw()
 
-    # The Algorithm Loop:
-    if len(Vars.maze) == 0:
+    # 2nd Part: The Algorithm Loop:
+    if len(Vars.maze) == 0:  # If there aren't any cells that are part of the maze
+        # choose one random cell, from the a random column in Vars.grid, and make it
+        # part of the maze.
         Vars.maze.append(random.choice([cell for row in Vars.grid for cell in row]))
 
+    # If there is a cell that is part of the maze or there is no current cell
     if len(Vars.maze) != 0 or Vars.current_cell is None:
+        # create an array that contains all the cells that aren't part of the maze
         cells_not_in_maze = [cell for row in Vars.grid for cell in row if cell not in Vars.maze]
+        # if there are cells that aren't in the maze or if there is no current cell
         if cells_not_in_maze != [] and Vars.current_cell is None:
+            # choose a a cell from the cells that aren't in the maze and make it
+            # the current cell.
             Vars.current_cell = random.choice(cells_not_in_maze)
 
+        # For each row containing cells in the grid
         for row in Vars.grid:
+            # for each cell per row
             for cell in row:
+                # color the cells depending on their individual information
                 cell.highlight()
+                # and draw them on the screen (this will not display them though).
                 cell.show()
 
+        # If  there are no cells that are part of the maze and there are cells that are
+        # not part of the maze
         if len(Vars.maze) != 0 and cells_not_in_maze != []:
+            # add to a doubly-linked list, a node with the current cell as its value
             Vars.doublyLL.add(Node(Vars.current_cell))
 
+            # choose a random cell neighboring the current cell, as the future current cell
             next_cell = Vars.current_cell.get_a_neighbor()
 
+            # 
             Vars.current_cell = next_cell
 
             if next_cell in Vars.doublyLL.traverse(values=True):
