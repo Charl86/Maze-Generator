@@ -11,11 +11,10 @@ with open(log_file, "w"):
     pass
 
 
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
-
 formatter = logging.Formatter("%(message)s")
 
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
 file_handler = logging.FileHandler(log_file)
 file_handler.setFormatter(formatter)
 file_handler.setLevel(logging.INFO)
