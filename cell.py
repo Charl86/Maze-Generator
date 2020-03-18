@@ -8,7 +8,9 @@ from config import Vars, Colors, PygameVars as Pyv
 
 # The Cell class.
 class Cell:
-    def __init__(self, x, y):  # It starts by giving an x and y coordinate.
+    # Takes as arguments an x and y coordinate, that represent the coordinates of the
+    # top-left corner of the cell.
+    def __init__(self, x, y):
         self.x = x
         self.y = y
 

@@ -4,12 +4,14 @@ from config import Vars, Colors, PygameVars as Pyv
 
 
 class Border:
+    # Takes as arguments an x and y coordinate, that represent the coordinates of the
+    # top-left corner of the cell.
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-        self.color = Colors.RED
-        self.thickness = 2
+        self.color = Colors.RED  # The color of the border.
+        self.thickness = 2  # The thickness of the border.
 
         # TODO: Apply this to the drawing of the border
         self.horizontal = Pyv.WIDTH - 2 * self.x
