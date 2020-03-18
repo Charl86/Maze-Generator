@@ -11,37 +11,17 @@ with open(log_file, "w"):
     pass
 
 
-formatter = logging.Formatter("%(message)s")
-
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)
-file_handler = logging.FileHandler(log_file)
-file_handler.setFormatter(formatter)
-file_handler.setLevel(logging.INFO)
-
-STREAMER = logging.getLogger(__name__)
-STREAMER.setLevel(logging.DEBUG)
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(formatter)
-stream_handler.setLevel(logging.DEBUG)
-
-LOGGER.addHandler(file_handler)
-STREAMER.addHandler(stream_handler)
-########################################################################################################################
-
-
 class Vars(object):
     starting_cell = None
     current_cell = None
     maze = []
     grid = []
     border = None
-    logger = LOGGER
     doublyLL = DoublyLinkedList()
     COLS = None
     ROWS = None
-    AREA = None
-    BORDER = 10
+    SIZE = None
+    BORDER = 31
     # self.WIDTH, self.HEIGHT = 400, 400
     # self.SPEED = 3
     # self.SCREEN = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
@@ -50,6 +30,15 @@ class Vars(object):
     # self.BLACK = (0, 0, 0)
     # self.ASPHALT = (49, 49, 49)
     # self.RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
+
+    @staticmethod
+    def padding_func(x):
+        if x == 0:
+            return 0
+        elif x % 2 == 0:
+            return -x
+        elif x % 2 == 1:
+            return x
 
 
 class PygameVars(object):
@@ -68,10 +57,32 @@ class Colors(object):
     RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
 
 
-# AREA = 40
-# AREA = math.floor((WIDTH - 2 * BORDER) / Vars.COLS)
-# while (WIDTH - 2 * BORDER) % AREA != 0:
-#     AREA -= 1
+class Debugger(object):
+    formatter = logging.Formatter("%(message)s")
 
-# COLS, ROWS = math.floor((WIDTH - 2 * BORDER) / AREA), math.floor((HEIGHT - 2 * BORDER) / AREA)
+    LOGGER = logging.getLogger(__name__)
+    LOGGER.setLevel(logging.INFO)
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(logging.INFO)
 
+    STREAMER = logging.getLogger(__name__)
+    STREAMER.setLevel(logging.DEBUG)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    stream_handler.setLevel(logging.DEBUG)
+
+    LOGGER.addHandler(file_handler)
+    STREAMER.addHandler(stream_handler)
+
+# SIZE = 40
+# SIZE = math.floor((WIDTH - 2 * BORDER) / Vars.COLS)
+# while (WIDTH - 2 * BORDER) % SIZE != 0:
+#     SIZE -= 1
+
+# COLS, ROWS = math.floor((WIDTH - 2 * BORDER) / SIZE), math.floor((HEIGHT - 2 * BORDER) / SIZE)
+
+
+if __name__ == "__main__":
+    for i in range(101):
+        print(f"{i, Vars.padding_func(i)}")
