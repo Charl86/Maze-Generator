@@ -95,39 +95,68 @@ def draw():
             # choose a random cell neighboring the current cell, as the future current cell
             next_cell = Vars.current_cell.get_a_neighbor()
 
-            # 
+            # assign the next cell as the current cell.
             Vars.current_cell = next_cell
 
+            # If the next cell (or now current cell) is in the doubly-linked list
             if next_cell in Vars.doublyLL.traverse(values=True):
+                # Pop the last node of the doubly-linked list and return its value,
+                # and then assign it to the popped_cell variable.
                 popped_cell = Vars.doublyLL.pop().val
+                # While the popped_cell isn't the next_cell (or current_cell)
                 while popped_cell != next_cell:
+                    # Keep popping nodes with cell as values from the doubly-linked list.
                     popped_cell = Vars.doublyLL.pop().val
+            # Else if the next cell (or now current_cell) is part of the maze
             elif next_cell in Vars.maze:
+                # create a node that has as value this next cell, and append this node
+                # to the doubly-linked list.
                 Vars.doublyLL.add(Node(next_cell))
+                # While there is a node (with a cell) before the last node (with a cell)
+                # in the doubly-linked list
                 while Vars.doublyLL.peek().prev_nod is not None:
+                    # turn off walls between the cell of the second-to-last node and the cell
+                    # of the last node
                     Vars.doublyLL.peek().prev_nod.val.remove_walls_with(Vars.doublyLL.peek().val)
+                    # Delete the last node containing the last cell of the doubly-linked list,
+                    # and make it at the same time part of the maze.
                     Vars.maze.append(Vars.doublyLL.pop().val)
+                # While there is no node before the last node of the doubly-linked list
                 else:
+                    # Delete the last node containing the last cell of the doubly-linked list,
+                    # and make it at the same time part of the maze.
                     Vars.maze.append(Vars.doublyLL.pop().val)
 
+                # make the current cell equal to None.
                 Vars.current_cell = None
 
+    # Display everything that has been drawn.
     pygame.display.update()
 
 
 def main_loop():
+    # Open Tkinter interface.
     Ts.start_loop()
 
+    # Initiate pygame module.
     pygame.init()
 
+    # The « area » of the cells is equal to the floor of the width of the window,
+    # minus the ratio of twice the coordinates of the border and the number of columns.
     Vars.AREA = math.floor((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    # Create a Screen() object with width Pyv.WIDTH and height Pyv.HEIGHT.
     Pyv.SCREEN = pygame.display.set_mode((Pyv.WIDTH, Pyv.HEIGHT))
+    # Create a Clock() object; basically the frames per second.
     Pyv.FPS = pygame.time.Clock()
 
+    # Create all the cells with their respective rows and store them in Vars.grid.
     Vars.grid = create_cells()
+    # Create a border with coordinates Vars.BORDER.
     Vars.border = Border(Vars.BORDER, Vars.BORDER)
 
+    # Disable the left wall of the first cell.
     Vars.grid[0][0].walls["left"].on = False
+    # Disable the right wall of the last cell.
     Vars.grid[-1][-1].walls["right"].on = False
 
     # Some logging:
@@ -141,11 +170,17 @@ def main_loop():
     # print(f"Star Cell: {Vars.grid[0][0].x + Vars.border.x, Vars.grid[0][0].y + Vars.border.y}.")
     # print(f"End Cell: {Vars.grid[-1][-1].x + Vars.border.x, Vars.grid[-1][-1].y + Vars.border.y}.")
 
+    # While true
     while 1:
+        # For each event in pygame.event.get(), check if the exit button
+        # has been pressed.
         for event in pygame.event.get():
+            # If it has, exit the program.
             if event.type == pygame.QUIT:
                 raise SystemExit
+        # Call the draw() function.
         draw()
 
 
+# Start the program.
 main_loop()
