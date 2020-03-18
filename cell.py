@@ -3,7 +3,7 @@ import pygame.gfxdraw
 import random
 import logging
 from wall import Wall
-from config import Vars, Colors, PygameVars as Pyv
+from config import Vars, Colors, Debugger, PygameVars as Pyv
 
 
 # The Cell class.
@@ -27,18 +27,18 @@ class Cell:
 
         self.visited = False  # If a cell has been chosen as the current cell.
         # The actual coordinates with the "area" applied of a cell.
-        self.spaced_out_x, self.spaced_out_y = self.x * Vars.AREA + Vars.BORDER, self.y * Vars.AREA + Vars.BORDER
+        self.spaced_out_x, self.spaced_out_y = self.x * Vars.SIZE + Vars.BORDER, self.y * Vars.SIZE + Vars.BORDER
 
         # The walls of a cell:
         self.walls = {
             "top": Wall(
-                self.spaced_out_x, self.spaced_out_y, self.spaced_out_x + Vars.AREA, self.spaced_out_y),
+                self.spaced_out_x, self.spaced_out_y, self.spaced_out_x + Vars.SIZE, self.spaced_out_y),
             "right": Wall(
-                self.spaced_out_x + Vars.AREA, self.spaced_out_y, self.spaced_out_x + Vars.AREA, self.spaced_out_y + Vars.AREA),
+                self.spaced_out_x + Vars.SIZE, self.spaced_out_y, self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE),
             "bot": Wall(
-                self.spaced_out_x + Vars.AREA, self.spaced_out_y + Vars.AREA, self.spaced_out_x, self.spaced_out_y + Vars.AREA),
+                self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE, self.spaced_out_x, self.spaced_out_y + Vars.SIZE),
             "left": Wall(
-                self.spaced_out_x, self.spaced_out_y + Vars.AREA, self.spaced_out_x, self.spaced_out_y)}
+                self.spaced_out_x, self.spaced_out_y + Vars.SIZE, self.spaced_out_x, self.spaced_out_y)}
 
     # The method that shows the walls of a cell, if they are turned on.
     def show(self):
@@ -138,14 +138,14 @@ class Cell:
         if self in Vars.doublyLL.traverse(values=True) and self != Vars.current_cell:
             # "Paint" it with self.fill_st (basically draws a rectangle with the given color over the cell).
             pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
-                self.spaced_out_x, self.spaced_out_y, Vars.AREA, Vars.AREA), self.fill_st)
+                self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE), self.fill_st)
         # Else if the cell is part of the maze
         elif self in Vars.maze:
             # "Paint" it with the self.fill_c color.
             pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
-                self.spaced_out_x, self.spaced_out_y, Vars.AREA, Vars.AREA), self.fill_c)
+                self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE), self.fill_c)
         # But if the cell is the current cell
         if self == Vars.current_cell:
             # "Paint" it with the self.fill_cur color.
-            pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(self.spaced_out_x, self.spaced_out_y, Vars.AREA, Vars.AREA),
+            pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE),
                                self.fill_cur)

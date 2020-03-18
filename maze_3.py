@@ -2,7 +2,7 @@ import pygame
 import pygame.gfxdraw
 import math
 import random
-from config import Vars, Colors, PygameVars as Pyv, STREAMER
+from config import Vars, Colors, Debugger, PygameVars as Pyv
 from DoublyLinkedList import Node
 from cell import Cell
 from border import Border
@@ -53,7 +53,6 @@ def create_cells():
 # 3) Display all the objects on the screen that were drawn before or during the
 # procedure of the algorithm.
 def draw():
-
     # 1rst Part: Repainting the screen, setting the frames per second
     Pyv.SCREEN.fill(Colors.WHITE)
     Pyv.FPS.tick(Pyv.SPEED)
@@ -141,13 +140,26 @@ def main_loop():
     # Initiate pygame module.
     pygame.init()
 
-    # The « area » of the cells is equal to the floor of the width of the window,
+    # The « SIZE » of the cells is equal to the floor of the width of the window,
     # minus the ratio of twice the coordinates of the border and the number of columns.
 
-    Vars.AREA = math.floor((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    if (Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS != 0:
-        pass
-
+    # TODO : the size of a cell shouldn't be too small.
+    # This block of code:
+    # iteration = 1
+    # Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    # while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0:
+    #     Pyv.WIDTH += Vars.padding_func(iteration)
+    #     Pyv.HEIGHT += Vars.padding_func(iteration)
+    #     Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    #     iteration += 1
+    # Or this one:
+    iteration = 1
+    Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0:
+        Pyv.WIDTH += 1
+        Pyv.HEIGHT += 1
+        Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+        iteration += 1
 
     # Create a Screen() object with width Pyv.WIDTH and height Pyv.HEIGHT.
     Pyv.SCREEN = pygame.display.set_mode((Pyv.WIDTH, Pyv.HEIGHT))
@@ -165,15 +177,15 @@ def main_loop():
     Vars.grid[-1][-1].walls["right"].on = False
 
     # Some logging:
-    STREAMER.debug(f"Cell 'AREA': {Vars.AREA}.")
-    STREAMER.debug(f"Hori COLS Length: {Vars.AREA * Vars.COLS}.")
-    STREAMER.debug(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
-    STREAMER.debug(f"BORDER coords: {Vars.border.top_left_corn}, {Vars.border.bot_left_corn},"
-                   f"{Vars.border.top_right_corn}, {Vars.border.bot_right_corn}.")
-    STREAMER.debug(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
-    STREAMER.debug(f"End Cell: {Vars.grid[-1][-1].spaced_out_x, Vars.grid[-1][-1].spaced_out_y}.")
-    # print(f"Square 'AREA': {Vars.AREA}.")
-    # print(f"Hori COLS Length: {Vars.AREA * Vars.COLS}.")
+    Debugger.STREAMER.debug(f"Cell SIZE: {Vars.SIZE}.")
+    Debugger.STREAMER.debug(f"Hori COLS Length: {Vars.SIZE * Vars.COLS}.")
+    Debugger.STREAMER.debug(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
+    Debugger.STREAMER.debug(f"BORDER coords: {Vars.border.top_left_corn}, {Vars.border.bot_left_corn},"
+                            f"{Vars.border.top_right_corn}, {Vars.border.bot_right_corn}.")
+    Debugger.STREAMER.debug(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
+    Debugger.STREAMER.debug(f"End Cell: {Vars.grid[-1][-1].spaced_out_x, Vars.grid[-1][-1].spaced_out_y}.")
+    # print(f"Square 'SIZE': {Vars.SIZE}.")
+    # print(f"Hori COLS Length: {Vars.SIZE * Vars.COLS}.")
     # print(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
     # print(f"BORDER: {Vars.border.x, Vars.border.y}.")
     # print(f"BORDER Dimensions: {Vars.border.horizontal, Vars.border.vertical}.")
