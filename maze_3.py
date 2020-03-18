@@ -130,7 +130,7 @@ def draw():
                 # make the current cell equal to None.
                 Vars.current_cell = None
 
-    # Display everything that has been drawn.
+    # 3rd Part: display everything that has been drawn.
     pygame.display.update()
 
 
@@ -143,7 +143,12 @@ def main_loop():
 
     # The « area » of the cells is equal to the floor of the width of the window,
     # minus the ratio of twice the coordinates of the border and the number of columns.
+
     Vars.AREA = math.floor((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    if (Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS != 0:
+        pass
+
+
     # Create a Screen() object with width Pyv.WIDTH and height Pyv.HEIGHT.
     Pyv.SCREEN = pygame.display.set_mode((Pyv.WIDTH, Pyv.HEIGHT))
     # Create a Clock() object; basically the frames per second.
@@ -163,8 +168,8 @@ def main_loop():
     STREAMER.debug(f"Cell 'AREA': {Vars.AREA}.")
     STREAMER.debug(f"Hori COLS Length: {Vars.AREA * Vars.COLS}.")
     STREAMER.debug(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
-    STREAMER.debug(f"BORDER: {Vars.border.x, Vars.border.y}.")
-    STREAMER.debug(f"BORDER Dimensions: {Vars.border.horizontal, Vars.border.vertical}.")
+    STREAMER.debug(f"BORDER coords: {Vars.border.top_left_corn}, {Vars.border.bot_left_corn},"
+                   f"{Vars.border.top_right_corn}, {Vars.border.bot_right_corn}.")
     STREAMER.debug(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
     STREAMER.debug(f"End Cell: {Vars.grid[-1][-1].spaced_out_x, Vars.grid[-1][-1].spaced_out_y}.")
     # print(f"Square 'AREA': {Vars.AREA}.")
