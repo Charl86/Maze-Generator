@@ -44,7 +44,7 @@ class Vars(object):
 
 class PygameVars(object):
     WIDTH, HEIGHT = 400, 400
-    SPEED = 5
+    SPEED = 10
 
     SCREEN = None
     FPS = None

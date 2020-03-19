@@ -31,12 +31,33 @@ def main_loop():
     #     Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
     #     iteration += 1
     # Or this one:
+    # iteration = 1
+    # Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    # while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0:
+    #     Pyv.WIDTH += 1
+    #     Pyv.HEIGHT += 1
+    #     Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    #     iteration += 1
+
     iteration = 1
     Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0:
-        Pyv.WIDTH += 1
-        Pyv.HEIGHT += 1
-        Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+    while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0 or Vars.SIZE < 25:
+        if Vars.SIZE > 25:
+            if Vars.COLS > Vars.ROWS:
+                Pyv.WIDTH += Vars.padding_func(iteration)
+                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+            else:
+                Pyv.WIDTH += Vars.padding_func(iteration)
+                Pyv.HEIGHT += Vars.padding_func(iteration)
+                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+        else:
+            if Vars.COLS > Vars.ROWS:
+                Pyv.WIDTH += 1
+                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
+            else:
+                Pyv.WIDTH += 1
+                Pyv.HEIGHT += 1
+                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
         iteration += 1
 
     # Create a Screen() object with width Pyv.WIDTH and height Pyv.HEIGHT.
