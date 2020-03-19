@@ -21,7 +21,8 @@ class Vars(object):
     COLS = None
     ROWS = None
     SIZE = None
-    BORDER = 31
+    CELL_MIN_SIZE = 25
+    BORDER = 15
     # self.WIDTH, self.HEIGHT = 400, 400
     # self.SPEED = 3
     # self.SCREEN = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
