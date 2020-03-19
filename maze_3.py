@@ -77,12 +77,14 @@ def main_loop():
 
     # Some logging:
     Debugger.STREAMER.debug(f"Cell SIZE: {Vars.SIZE}.")
-    Debugger.STREAMER.debug(f"Hori COLS Length: {Vars.SIZE * Vars.COLS}.")
+    Debugger.STREAMER.debug(f"Cells' Horizontal Length: {Vars.SIZE * Vars.COLS}.")
+    Debugger.STREAMER.debug(f"Cells' Vertical Length: {Vars.SIZE * Vars.ROWS}.")
     Debugger.STREAMER.debug(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
     Debugger.STREAMER.debug(f"BORDER coords: {Vars.border.top_left_corn}, {Vars.border.bot_left_corn},"
                             f"{Vars.border.top_right_corn}, {Vars.border.bot_right_corn}.")
+    Debugger.STREAMER.debug(f"Border dimensions: {Vars.border.horizon_length} x {Vars.border.vertical_length}.")
     Debugger.STREAMER.debug(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
-    Debugger.STREAMER.debug(f"End Cell: {Vars.grid[-1][-1].spaced_out_x, Vars.grid[-1][-1].spaced_out_y}.")
+    Debugger.STREAMER.debug(f"End Cell: {Vars.grid[-1][-1].walls['right'].B}.")
     # print(f"Square 'SIZE': {Vars.SIZE}.")
     # print(f"Hori COLS Length: {Vars.SIZE * Vars.COLS}.")
     # print(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")

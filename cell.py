@@ -32,13 +32,18 @@ class Cell:
         # The walls of a cell:
         self.walls = {
             "top": Wall(
-                self.spaced_out_x, self.spaced_out_y, self.spaced_out_x + Vars.SIZE, self.spaced_out_y),
+                (self.spaced_out_x, self.spaced_out_y),
+                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y)),
             "right": Wall(
-                self.spaced_out_x + Vars.SIZE, self.spaced_out_y, self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE),
+                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y),
+                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE)),
             "bot": Wall(
-                self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE, self.spaced_out_x, self.spaced_out_y + Vars.SIZE),
+                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE),
+                (self.spaced_out_x, self.spaced_out_y + Vars.SIZE)),
             "left": Wall(
-                self.spaced_out_x, self.spaced_out_y + Vars.SIZE, self.spaced_out_x, self.spaced_out_y)}
+                (self.spaced_out_x, self.spaced_out_y + Vars.SIZE),
+                (self.spaced_out_x, self.spaced_out_y))
+        }
 
     # The method that shows the walls of a cell, if they are turned on.
     def show(self):
