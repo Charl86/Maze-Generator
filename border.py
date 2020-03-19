@@ -12,9 +12,13 @@ class Border:
 
         # Corners of the border.
         self.top_left_corn = self.x, self.y
-        self.bot_left_corn = self.x, Pyv.HEIGHT - 2 * self.y
-        self.top_right_corn = Pyv.WIDTH - 2 * self.x, self.y
-        self.bot_right_corn = Pyv.WIDTH - 2 * self.x, Pyv.HEIGHT - 2 * self.y
+        self.bot_left_corn = self.x, self.y + Pyv.HEIGHT - 2 * self.y
+        self.top_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y
+        self.bot_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y + Pyv.HEIGHT - 2 * self.y
+
+        # Dimensions of border
+        self.horizon_length = Pyv.WIDTH - 2 * self.x
+        self.vertical_length = Pyv.WIDTH - 2 * self.y
 
         self.color = Colors.RED  # The color of the border.
         self.thickness = 2  # The thickness of the border.

@@ -4,19 +4,24 @@ from config import Vars, Colors, PygameVars as Pyv
 
 # The Wall class
 class Wall:
-    # takes as arguments two points: (a, b) and (c, d). Think of a line in a cartesian
-    # plane with points A = (a, b) and B = (c, d)
-    # it also takes as argument the "on" status, which defaults to True if no argument is given
+    # takes as arguments two points: A and B which are tuples. A will be the starting point
+    # of the line and B will be its ending point.
+    # It also takes as argument the "on" status, which defaults to True if no argument is given
     # this means that the wall starts as turned on, and get turned off when the remove_walls_with() method is called
-    def __init__(self, a, b, c, d, on=True):
-        self.a, self.b, self.c, self.d = a, b, c, d
+    def __init__(self, A, B, on=True):
+        self.A, self.B = A, B
+        # Validating that tuples are actually given as A and B.
+        if not isinstance(self.A, tuple) or not isinstance(self.B, tuple):
+            raise TypeError("Tuple objects were expected for A and B but instead at least"
+                            "one of them is not.")
+
         self.on = on
 
-        # The color of the walls
+        # The color of the walls.
         self.color = Colors.BLACK
 
-    # The show method that takes as argument the thickness of a wall
+    # The show method that takes as argument the thickness of a wall.
     def show(self, thickness):
         if self.on:
-            # drawing of the wall.
-            pygame.draw.line(Pyv.SCREEN, self.color, (self.a, self.b), (self.c, self.d), thickness)
+            # Drawing of the wall.
+            pygame.draw.line(Pyv.SCREEN, self.color, self.A, self.B, thickness)
