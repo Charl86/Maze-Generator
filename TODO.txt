@@ -1,0 +1,6 @@
+TODO:
+    1) Instead of creating a border and make the cells fit inside it,
+        if order to have a border, I could just have a starting cell
+        at at a distance from the edge which I would call my "border",
+        and then have the actual border fit around the cells.
+    2) Fix the padding issue with regards to to-do 1).

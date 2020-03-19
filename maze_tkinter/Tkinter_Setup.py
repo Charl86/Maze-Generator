@@ -95,7 +95,7 @@ class TkinterWindow:
 
             # "Log" Tkinter window size:
             # print(f"frame_1 size: {self.frame_1.winfo_width(), self.frame_1.winfo_height()}")
-        elif not(2 <= int(col_entry) <= 25) or not(2 <= int(row_entry) <= 25):
+        elif not(2 <= int(col_entry)) or not(2 <= int(row_entry)):
             enable = False
             self.info_label_text.set("The column and row numbers must be within a range of 2 to 25.")
 
