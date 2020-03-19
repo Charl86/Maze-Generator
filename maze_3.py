@@ -1,6 +1,5 @@
 import pygame
 import pygame.gfxdraw
-import math
 import random
 from config import Vars, Colors, Debugger, PygameVars as Pyv
 from DoublyLinkedList import Node
