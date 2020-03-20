@@ -1,5 +1,5 @@
 TODO:
-    1) Calculate the size of the cells.
-    2) Calculate the length of the columns and rows based on the size of the cells.
-    3) Adjust the border based on the length of the columns and rows.
-    4) Adjust the window based on the border dimensions.
+    1) Undo the cells size function and instead let the user choose the size of the
+        cells. ✔
+    2) Implement a function that suggests an ideal cell size to the user and implement it
+        in the Tkinter window (based on the previous cell size function).

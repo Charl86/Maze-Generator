@@ -23,6 +23,10 @@ class Vars(object):
     SIZE = None
     BORDER = 15
 
+    @staticmethod
+    def padding_func(cols_or_rows):
+        return int(round(161.89079 * 0.9006 ** cols_or_rows + 18.69355, 0))
+
 
 class PygameVars(object):
     WIDTH, HEIGHT = 400, 400
@@ -57,13 +61,6 @@ class Debugger(object):
 
     LOGGER.addHandler(file_handler)
     STREAMER.addHandler(stream_handler)
-
-# SIZE = 40
-# SIZE = math.floor((WIDTH - 2 * BORDER) / Vars.COLS)
-# while (WIDTH - 2 * BORDER) % SIZE != 0:
-#     SIZE -= 1
-
-# COLS, ROWS = math.floor((WIDTH - 2 * BORDER) / SIZE), math.floor((HEIGHT - 2 * BORDER) / SIZE)
 
 
 if __name__ == "__main__":
