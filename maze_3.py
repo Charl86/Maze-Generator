@@ -8,6 +8,13 @@ from border import Border
 from maze_tkinter import Tkinter_Setup as Ts
 
 
+def the_padder():
+    Vars.SIZE = int((max(Pyv.WIDTH, Pyv.HEIGHT) - 2 * Vars.BORDER) / max(Vars.COLS, Vars.ROWS))
+    iterating = 0
+    while (max(Pyv.WIDTH, Pyv.HEIGHT) - 2 * Vars.BORDER) % max(Vars.COLS, Vars.ROWS) != 0:
+
+
+
 # Function that sets up one-time events and variables and then starts the loop that will
 # keep the pygame window open.
 def main_loop():

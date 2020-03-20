@@ -1,6 +1,5 @@
 TODO:
-    1) Instead of creating a border and make the cells fit inside it,
-        if order to have a border, I could just have a starting cell
-        at at a distance from the edge which I would call my "border",
-        and then have the actual border fit around the cells.
-    2) Fix the padding issue with regards to to-do 1).
+    1) Calculate the size of the cells.
+    2) Calculate the length of the columns and rows based on the size of the cells.
+    3) Adjust the border based on the length of the columns and rows.
+    4) Adjust the window based on the border dimensions.
