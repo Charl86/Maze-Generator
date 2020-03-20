@@ -8,73 +8,30 @@ from border import Border
 from maze_tkinter import Tkinter_Setup as Ts
 
 
-def the_padder():
-    Vars.SIZE = int((max(Pyv.WIDTH, Pyv.HEIGHT) - 2 * Vars.BORDER) / max(Vars.COLS, Vars.ROWS))
-    iterating = 0
-    while (max(Pyv.WIDTH, Pyv.HEIGHT) - 2 * Vars.BORDER) % max(Vars.COLS, Vars.ROWS) != 0:
-
-
-
 # Function that sets up one-time events and variables and then starts the loop that will
 # keep the pygame window open.
 def main_loop():
     # Open Tkinter interface.
     Ts.start_loop()
 
+    # Create a border with coordinates Vars.BORDER.
+    Vars.border = Border(Vars.BORDER, Vars.BORDER)
+
+    # Adjust size of the screen to border.
+    Pyv.WIDTH = Vars.border.horizon_length + 2 * Vars.BORDER
+    Pyv.HEIGHT = Vars.border.vertical_length + 2 * Vars.BORDER
+
     # Initiate pygame module.
     pygame.init()
 
-    # The « SIZE » of the cells is equal to the floor of the width of the window,
-    # minus the ratio of twice the coordinates of the border and the number of columns.
-
-    # TODO : the size of a cell shouldn't be too small.
-    # This block of code:
-    # iteration = 1
-    # Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    # while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0:
-    #     Pyv.WIDTH += Vars.padding_func(iteration)
-    #     Pyv.HEIGHT += Vars.padding_func(iteration)
-    #     Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    #     iteration += 1
-    # Or this one:
-    # iteration = 1
-    # Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    # while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0:
-    #     Pyv.WIDTH += 1
-    #     Pyv.HEIGHT += 1
-    #     Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    #     iteration += 1
-
-    iteration = 1
-    Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-    while ((Pyv.WIDTH - 2 * Vars.BORDER) % Vars.COLS) != 0 or Vars.SIZE < 25:
-        if Vars.SIZE > 25:
-            if Vars.COLS > Vars.ROWS:
-                Pyv.WIDTH += Vars.padding_func(iteration)
-                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-            else:
-                Pyv.WIDTH += Vars.padding_func(iteration)
-                Pyv.HEIGHT += Vars.padding_func(iteration)
-                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-        else:
-            if Vars.COLS > Vars.ROWS:
-                Pyv.WIDTH += 1
-                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-            else:
-                Pyv.WIDTH += 1
-                Pyv.HEIGHT += 1
-                Vars.SIZE = int((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
-        iteration += 1
-
     # Create a Screen() object with width Pyv.WIDTH and height Pyv.HEIGHT.
     Pyv.SCREEN = pygame.display.set_mode((Pyv.WIDTH, Pyv.HEIGHT))
+
     # Create a Clock() object; basically the frames per second.
     Pyv.FPS = pygame.time.Clock()
 
     # Create all the cells with their respective rows and store them in Vars.grid.
     Vars.grid = create_cells()
-    # Create a border with coordinates Vars.BORDER.
-    Vars.border = Border(Vars.BORDER, Vars.BORDER)
 
     # Disable the left wall of the first cell.
     Vars.grid[0][0].walls["left"].on = False
@@ -86,20 +43,9 @@ def main_loop():
     Debugger.STREAMER.debug(f"Cells' Horizontal Length: {Vars.SIZE * Vars.COLS}.")
     Debugger.STREAMER.debug(f"Cells' Vertical Length: {Vars.SIZE * Vars.ROWS}.")
     Debugger.STREAMER.debug(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
-    Debugger.STREAMER.debug(f"BORDER coords: {Vars.border.top_left_corn}, {Vars.border.bot_left_corn},"
-                            f"{Vars.border.top_right_corn}, {Vars.border.bot_right_corn}.")
     Debugger.STREAMER.debug(f"Border dimensions: {Vars.border.horizon_length} x {Vars.border.vertical_length}.")
     Debugger.STREAMER.debug(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
     Debugger.STREAMER.debug(f"End Cell: {Vars.grid[-1][-1].walls['right'].B}.")
-    # print(f"Square 'SIZE': {Vars.SIZE}.")
-    # print(f"Hori COLS Length: {Vars.SIZE * Vars.COLS}.")
-    # print(f"SCREEN size: {Pyv.WIDTH, Pyv.HEIGHT}.")
-    # print(f"BORDER: {Vars.border.x, Vars.border.y}.")
-    # print(f"BORDER Dimensions: {Vars.border.horizontal, Vars.border.vertical}.")
-    # print(f"Start Cell: {Vars.grid[0][0].spaced_out_x, Vars.grid[0][0].spaced_out_y}.")
-    # print(f"End Cell: {Vars.grid[-1][-1].spaced_out_x, Vars.grid[-1][-1].spaced_out_y}.")
-    # print(f"Star Cell: {Vars.grid[0][0].x + Vars.border.x, Vars.grid[0][0].y + Vars.border.y}.")
-    # print(f"End Cell: {Vars.grid[-1][-1].x + Vars.border.x, Vars.grid[-1][-1].y + Vars.border.y}.")
 
     # While true
     while 1:

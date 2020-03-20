@@ -21,30 +21,12 @@ class Vars(object):
     COLS = None
     ROWS = None
     SIZE = None
-    CELL_MIN_SIZE = 25
     BORDER = 15
-    # self.WIDTH, self.HEIGHT = 400, 400
-    # self.SPEED = 3
-    # self.SCREEN = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-    # self.FPS = pygame.time.Clock()
-    # self.WHITE = (255, 255, 255)
-    # self.BLACK = (0, 0, 0)
-    # self.ASPHALT = (49, 49, 49)
-    # self.RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
-
-    @staticmethod
-    def padding_func(x):
-        if x == 0:
-            return 0
-        elif x % 2 == 0:
-            return -x
-        elif x % 2 == 1:
-            return x
 
 
 class PygameVars(object):
     WIDTH, HEIGHT = 400, 400
-    SPEED = 10
+    SPEED = 15
 
     SCREEN = None
     FPS = None

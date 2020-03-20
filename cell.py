@@ -1,9 +1,9 @@
 import pygame
 import pygame.gfxdraw
 import random
-import logging
 from wall import Wall
-from config import Vars, Colors, Debugger, PygameVars as Pyv
+from config import Vars, Colors, PygameVars as Pyv
+from config import Debugger
 
 
 # The Cell class.
@@ -15,17 +15,17 @@ class Cell:
         self.y = y
 
         # Definition of some attributes:
-        self.thickness = 3  # set the thickness of the walls.
-        # self.rect_thick = 2
+        self.thickness = 8  # set the thickness of the walls.
 
         # Colors:
-        # self.fill_c = RAND_COLOR
-        self.fill_c = (0, 175, 255, 255)  # color for cells that are part of the maze
-        # self.fill_c = (255, 255, 255, 255)
-        self.fill_cur = (100, 0, 255, 125)  # color for current cell
-        self.fill_st = (255, 0, 255, 100)  # color for cells in the doubly-linked list.
+        self.maze_cell_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
+        # self.maze_cell_color = (0, 175, 255, 255)  # color for cells that are part of the maze
+        # self.maze_cell_color = (255, 255, 255, 255)
+        self.current_cell_color = (100, 0, 255, 125)  # color for current cell
+        self.trail_cells_color = (255, 0, 255, 100)  # color for cells in the doubly-linked list.
 
         self.visited = False  # If a cell has been chosen as the current cell.
+
         # The actual coordinates with the "area" applied of a cell.
         self.spaced_out_x, self.spaced_out_y = self.x * Vars.SIZE + Vars.BORDER, self.y * Vars.SIZE + Vars.BORDER
 
@@ -33,17 +33,21 @@ class Cell:
         self.walls = {
             "top": Wall(
                 (self.spaced_out_x, self.spaced_out_y),
-                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y)),
+                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y)
+                    ),
             "right": Wall(
                 (self.spaced_out_x + Vars.SIZE, self.spaced_out_y),
-                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE)),
+                (self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE)
+                    ),
             "bot": Wall(
                 (self.spaced_out_x + Vars.SIZE, self.spaced_out_y + Vars.SIZE),
-                (self.spaced_out_x, self.spaced_out_y + Vars.SIZE)),
+                (self.spaced_out_x, self.spaced_out_y + Vars.SIZE)
+                    ),
             "left": Wall(
                 (self.spaced_out_x, self.spaced_out_y + Vars.SIZE),
-                (self.spaced_out_x, self.spaced_out_y))
-        }
+                (self.spaced_out_x, self.spaced_out_y)
+                    )
+                }
 
     # The method that shows the walls of a cell, if they are turned on.
     def show(self):
@@ -102,18 +106,6 @@ class Cell:
             # and thus there is no fear of walking backwards.
             return random.choice([neighbor for neighbor in self.neighbors])
 
-        # if len(self.neighbors):
-        #     if len(Vars.stack) > 1:
-        #         # return random.choice([neighbor for neighbor in self.neighbors if neighbor != Vars.stack[-1]])
-        #         # n = []
-        #         # for neighbor in self.neighbors:
-        #         #     if neighbor != Vars.stack[-2]:
-        #         #         n.append(neighbor)
-        #         # return random.choice(n)
-        #         # return random.choice([neighbor for neighbor in self.neighbors if neighbor != Vars.stack[-2]])
-        #     else:
-        #         return random.choice([neighbor for neighbor in self.neighbors])
-
     # A getter that returns a list of the adjacent cells of self.
     @property
     def neighbors(self):
@@ -141,16 +133,16 @@ class Cell:
         # If the cell is in the doubly-linked list (and thus not part of the maze yet) and the cell isn't the
         # current cell
         if self in Vars.doublyLL.traverse(values=True) and self != Vars.current_cell:
-            # "Paint" it with self.fill_st (basically draws a rectangle with the given color over the cell).
+            # "Paint" it with self.trail_cells_color (basically draws a rectangle with the given color over the cell).
             pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
-                self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE), self.fill_st)
+                self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE), self.trail_cells_color)
         # Else if the cell is part of the maze
         elif self in Vars.maze:
-            # "Paint" it with the self.fill_c color.
+            # "Paint" it with the self.maze_cell_color color.
             pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
-                self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE), self.fill_c)
+                self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE), self.maze_cell_color)
         # But if the cell is the current cell
         if self == Vars.current_cell:
-            # "Paint" it with the self.fill_cur color.
+            # "Paint" it with the self.current_cell_color color.
             pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(self.spaced_out_x, self.spaced_out_y, Vars.SIZE, Vars.SIZE),
-                               self.fill_cur)
+                               self.current_cell_color)
