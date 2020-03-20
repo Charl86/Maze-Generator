@@ -1,6 +1,6 @@
 import pygame
 import pygame.gfxdraw
-from config import Colors, PygameVars as Pyv
+from config import Colors, Vars, PygameVars as Pyv
 
 
 class Border:
@@ -11,14 +11,16 @@ class Border:
         self.y = y
 
         # Corners of the border.
-        self.top_left_corn = self.x, self.y
-        self.bot_left_corn = self.x, self.y + Pyv.HEIGHT - 2 * self.y
-        self.top_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y
-        self.bot_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y + Pyv.HEIGHT - 2 * self.y
+        # self.top_left_corn = self.x, self.y
+        # self.bot_left_corn = self.x, self.y + Pyv.HEIGHT - 2 * self.y
+        # self.top_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y
+        # self.bot_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y + Pyv.HEIGHT - 2 * self.y
 
         # Dimensions of border
-        self.horizon_length = Pyv.WIDTH - 2 * self.x
-        self.vertical_length = Pyv.WIDTH - 2 * self.y
+        self.horizon_length = Vars.COLS * Vars.SIZE
+        self.vertical_length = Vars.ROWS * Vars.SIZE
+        # self.horizon_length = Pyv.WIDTH - 2 * self.x
+        # self.vertical_length = Pyv.WIDTH - 2 * self.y
 
         self.color = Colors.RED  # The color of the border.
         self.thickness = 2  # The thickness of the border.
