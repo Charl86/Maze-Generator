@@ -21,7 +21,7 @@ class Vars(object):
     COLS = None
     ROWS = None
     SIZE = None
-    BORDER = 15
+    BORDER = 0
 
     @staticmethod
     def padding_func(cols_or_rows):
