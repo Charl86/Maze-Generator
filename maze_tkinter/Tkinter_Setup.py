@@ -29,7 +29,7 @@ class TkinterWindow:
         # Create a label object within frame_1 with value "Cell size:".
         self.cell_size_text = ttk.Label(self.frame_1, text="Cell size:")
         # Create a label object within frame_1 with value the same as the info_label_text variable.
-        self.filter_text = ttk.Label(self.frame_1, textvariable=self.info_label_text, wraplength=150)
+        self.validation_text = ttk.Label(self.frame_1, textvariable=self.info_label_text, wraplength=150)
 
         # Create an entry object with the value of the num_of_cols variable.
         self.rows_entry = ttk.Entry(self.frame_1, width=2, textvariable=self.num_of_cols)
@@ -45,7 +45,7 @@ class TkinterWindow:
         self.frame_1.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S))
 
         self.title_text.grid(column=0, row=0, pady=15, columnspan=4)
-        self.filter_text.grid(column=2, row=1, rowspan=2, padx=20)
+        self.validation_text.grid(column=2, row=1, rowspan=2, padx=20)
 
         self.nums_rows_text.grid(column=0, row=1, sticky=tk.W, padx=10)
         self.nums_cols_text.grid(column=0, row=2, sticky=tk.W, padx=10)
@@ -107,7 +107,7 @@ class TkinterWindow:
 
         # If either of the values of the entries are ''
         if col_entry == '' or row_entry == '' or cell_size_number == '':
-            self.info_label_text.set("")  # set filter message to ''.
+            self.info_label_text.set("")  # set validation message to ''.
 
         # Else if either of the entries as a non-numeric character
         elif not col_entry.isdigit() or not row_entry.isdigit() or not cell_size_number.isdigit():
