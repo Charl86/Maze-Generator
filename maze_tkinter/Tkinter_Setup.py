@@ -125,7 +125,6 @@ class TkinterWindow:
             self.master.destroy()  # kill the window.
 
     def enable_button(self):
-        Debugger.STREAMER.debug(self.get_wind_size())
 
         # Get the values of the entries and store them in the given variables.
         col_entry, row_entry = self.num_of_cols.get(), self.num_of_rows.get()
@@ -159,6 +158,7 @@ class TkinterWindow:
         elif not (10 <= int(cell_size_number) <= 150):
             # display a message stating the condition.
             self.info_label_text.set("The cell size must be an integer from 10 to 150 (inclusive).")
+
         # Else, this means that the entries passed all the validation tests
         else:
             # hence, clear the validation message as the entries met all of their conditions
