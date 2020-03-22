@@ -125,49 +125,40 @@ class TkinterWindow:
             self.master.destroy()  # kill the window.
 
     def enable_button(self):
-
         # Get the values of the entries and store them in the given variables.
         col_entry, row_entry = self.num_of_cols.get(), self.num_of_rows.get()
         cell_size_number = self.cell_size_entry.get()
 
+        self.suggested_text_val.set("")
+
         enable = False  # A flag that signals the enabling of the generation button.
 
         # If either of the values of the entries are ''
-        if col_entry == '' or row_entry == '' or cell_size_number == '':
+        if col_entry == '' or row_entry == '':
             self.info_label_text.set("")  # set validation message to ''.
 
         # Else if either of the entries as a non-numeric character
-        elif not col_entry.isdigit() or not row_entry.isdigit() or not cell_size_number.isdigit():
+        elif not col_entry.isdigit() or not row_entry.isdigit():
             # display a message stating that only numeric characters should be entered.
             self.info_label_text.set("You must enter numbers only; no non-numeric characters.")
 
-        # Else if all of the entries have numbers outside of their established ranges.
-        elif not (2 <= int(col_entry)) or not (2 <= int(row_entry)) and not (10 <= int(cell_size_number) <= 150):
-            # display a message stating the condition.
-            self.info_label_text.set("The column and row numbers must be within a range of 2 to 31."
-                                     "\nThe cell size must be an integer from 10 to 150 (inclusive).")
-
-        # Else if the numbers for the columns and rows entries are outside of their bounds and the number
-        # in the cell size entry is within bound.
-        elif not (2 <= int(col_entry)) or not (2 <= int(row_entry)):
+        # Else if the numbers for the columns and rows entries are outside of their bounds.
+        elif not (2 <= int(col_entry) <= 31) or not (2 <= int(row_entry) <= 31):
             # display a message stating the condition.
             self.info_label_text.set("The column and row numbers must be within a range of 2 to 31.")
 
+        elif not self.validate_cell_size(col_entry, row_entry, cell_size_number):
+            pass
         # Else if the numbers for the columns and rows entries are within bounds but not the number
         # of the cell size entry.
-        elif not (10 <= int(cell_size_number) <= 150):
-            # display a message stating the condition.
-            self.info_label_text.set("The cell size must be an integer from 10 to 150 (inclusive).")
+        # elif not (10 <= int(cell_size_number) <= 150):
+        #     # display a message stating the condition.
+        #     self.info_label_text.set("The cell size must be an integer from 10 to 150 (inclusive).")
 
         # Else, this means that the entries passed all the validation tests
         else:
             # hence, clear the validation message as the entries met all of their conditions
             self.info_label_text.set("")
-
-            if cell_size_number == '' or cell_size_number.isdigit():
-                self.suggested_text_val.set(
-                    f"Suggested size: "
-                    f"{Vars.padding_func(max(int(col_entry), int(row_entry)))}")
 
             enable = True  # and raise the flag to enable the button.
 
@@ -191,6 +182,22 @@ class TkinterWindow:
 
         # Repeat this method after self.delay milliseconds.
         self.master.after(self.delay, self.enable_button)
+
+    def validate_cell_size(self, col_nums, row_nums, cell_size_entry_val):
+        self.info_label_text.set("")
+
+        self.suggested_text_val.set(
+            f"Suggested size: "
+            f"{Vars.padding_func(max(int(col_nums), int(row_nums)))}")
+
+        if not cell_size_entry_val.isdigit() and cell_size_entry_val != "":
+            self.info_label_text.set("Cell size can't be a non-numeric character.")
+        elif cell_size_entry_val != "" and not (10 <= int(cell_size_entry_val) <= 150):
+            self.info_label_text.set("Cell size must be a number between 10 and 150 inclusively.")
+        else:
+            if cell_size_entry_val.isdigit():
+                return True
+        return False
 
     def on_closing(self):
         # If the close button is pressed (x button at the top-right corner),
