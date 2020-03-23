@@ -17,7 +17,7 @@ def main_loop():
     # Create a border with coordinates Vars.BORDER.
     Vars.border = Border(Vars.BORDER, Vars.BORDER)
 
-    # Adjust size of the screen to border.
+    # Calculate size of the screen based on the size of the border.
     Pyv.WIDTH = Vars.border.horizon_length + 2 * Vars.BORDER
     Pyv.HEIGHT = Vars.border.vertical_length + 2 * Vars.BORDER
 
