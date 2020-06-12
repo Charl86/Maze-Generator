@@ -210,7 +210,7 @@ class TkinterWindow:
 
 def start_loop():
     root = tk.Tk()  # Create a Tk() object.
-    TkinterWindow(root)  # Run the TkinterWindow class with the root as argument.
+    TkinterWindow(root)  # Run the TkinterWindow class with the 'root' variable as argument.
     root.mainloop()  # Start the Tk() loop.
 
 

@@ -18,8 +18,8 @@ class Cell:
         self.thickness = 8  # set the thickness of the walls.
 
         # Colors:
-        self.maze_cell_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
-        # self.maze_cell_color = (0, 175, 255, 255)  # color for cells that are part of the maze
+        # self.maze_cell_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
+        self.maze_cell_color = (0, 175, 255, 255)  # color for cells that are part of the maze
         # self.maze_cell_color = (255, 255, 255, 255)
         self.current_cell_color = (100, 0, 255, 125)  # color for current cell
         self.trail_cells_color = (255, 0, 255, 100)  # color for cells in the doubly-linked list.
