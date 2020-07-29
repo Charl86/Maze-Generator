@@ -1,4 +1,5 @@
 LICENCE.txt
-**/**/*.log
 .venv/
+.vscode/
+**/**/*.log
 **/**/__pycache__/
