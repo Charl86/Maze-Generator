@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from maze.config import Vars, Debugger, PygameVars as Pyv
+from mazeGenerator import mazeInstance
 
 
 class TkinterWindow:
@@ -145,7 +145,9 @@ class TkinterWindow:
         # Else if the numbers for the columns and rows entries are outside of their bounds.
         elif not (2 <= int(col_entry) <= 31) or not (2 <= int(row_entry) <= 31):
             # display a message stating the condition.
-            self.info_label_text.set("The column and row numbers must be within a range of 2 to 31.")
+            self.info_label_text.set(
+                "The column and row numbers must be within a range of 2 to 31."
+            )
 
         elif not self.validate_cell_size(col_entry, row_entry, cell_size_number):
             pass
@@ -169,17 +171,16 @@ class TkinterWindow:
 
             # let the variables of rows, columns and cell size be equal to
             # the respective entry values.
-            Vars.COLS, Vars.ROWS = int(col_entry), int(row_entry)
-            Vars.SIZE = int(cell_size_number)
+            mazeInstance.COLS, mazeInstance.ROWS = int(col_entry), int(row_entry)
+            mazeInstance.SIZE = int(cell_size_number)
         # Else
         else:
             # set the state of the generation button to disabled
             self.gene_butt.configure(state="disabled")
 
             # reset the value of the columns and rows and cell size
-            Vars.COLS, Vars.ROWS = None, None
-            Vars.SIZE = None
-
+            mazeInstance.COLS, mazeInstance.ROWS = None, None
+            mazeInstance.SIZE = None
         # Repeat this method after self.delay milliseconds.
         self.master.after(self.delay, self.enable_button)
 
@@ -188,7 +189,7 @@ class TkinterWindow:
 
         self.suggested_text_val.set(
             f"Suggested size: "
-            f"{Vars.padding_func(max(int(col_nums), int(row_nums)))}")
+            f"{self.padding_func(max(int(col_nums), int(row_nums)))}")
 
         if not cell_size_entry_val.isdigit() and cell_size_entry_val != "":
             self.info_label_text.set("Cell size can't be a non-numeric character.")
@@ -206,6 +207,9 @@ class TkinterWindow:
 
     def get_wind_size(self):
         return self.master.winfo_width(), self.master.winfo_height()
+
+    def padding_func(self, cols_or_rows):
+        return int(round(161.89079 * 0.9006 ** cols_or_rows + 18.69355))
 
 
 def start_loop():
