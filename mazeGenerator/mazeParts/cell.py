@@ -22,7 +22,7 @@ class Cell:
         self.current_cell_color = (100, 0, 255, 125)  # color for current cell
         self.trail_cells_color = (255, 0, 255, 100)  # color for cells in the doubly-linked list.
 
-        self.visited = False  # If a cell has been chosen as the current cell.
+        self.visited = False  # If a cell has been picked.
 
         # The actual coordinates with the "area" applied of a cell.
         self.spaced_out_x, self.spaced_out_y =\
@@ -50,6 +50,7 @@ class Cell:
 
     # The method that shows the walls of a cell, if they are turned on.
     def show(self):
+        self.highlight()
         self.walls["top"].show(self.thickness)
         self.walls["right"].show(self.thickness)
         self.walls["bot"].show(self.thickness)
@@ -92,18 +93,14 @@ class Cell:
             other.walls["top"].on = False
 
     # Method for choosing a random adjacent neighbor.
-    def get_a_neighbor(self):
-        # When there are two or more nodes containing a cell in the doubly-linked list
-        if len(mazeInstance.doublyLL.traverse()) >= 2:
-            # choose a random neighbor from self.neighbors (which returns all the adjacent cells),
-            # as long as it isn't the previous current_cell.
-            return random.choice([neighbor for neighbor in self.neighbors
-                                  if neighbor != mazeInstance.doublyLL.peek().prev_nod.val])
-        # If there is only one node with one cell in the doubly-linked list
+    def getUnvNeigh(self):
+        return random.choice([uv for uv in self.neighbors if not uv.visited])
+
+    def unvisitedNeigh(self):
+        if any([not neighbor.visited for neighbor in self.neighbors]):
+            return True
         else:
-            # choose any neighboring cell because there's only one cell in the doubly-linked list
-            # and thus there is no fear of walking backwards.
-            return random.choice([neighbor for neighbor in self.neighbors])
+            return False
 
     # A getter that returns a list of the adjacent cells of self.
     @property
@@ -128,22 +125,22 @@ class Cell:
 
     # Method that takes charge of dyeing the cells depending on which of the data structures
     # they belong to.
-    def highlight(self):
-        # If the cell is in the doubly-linked list (and thus not part of the maze yet) and the cell isn't the
-        # current cell
-        if self in mazeInstance.doublyLL.traverse(values=True) and self != mazeInstance.current_cell:
+    def highlight(self, backtracking=False):
+        if self.visited and self != mazeInstance.current_cell:
             # "Paint" it with self.trail_cells_color (basically draws a rectangle with the given color over the cell).
             pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
                 self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.trail_cells_color)
-        # Else if the cell is part of the maze
-        elif self in mazeInstance.maze:
-            # "Paint" it with the self.maze_cell_color color.
-            pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
-                self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.maze_cell_color)
-        # But if the cell is the current cell
-        if self == mazeInstance.current_cell:
+        if self == mazeInstance.current_cell and not backtracking:
             # "Paint" it with the self.current_cell_color color.
             pygame.gfxdraw.box(
                 Pyv.SCREEN, pygame.Rect(
                     self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.current_cell_color
+                )
+        elif self == mazeInstance.current_cell and backtracking:
+            pygame.gfxdraw.box(
+                Pyv.SCREEN,
+                pygame.Rect(
+                    self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE
+                ),
+                (155, 255, 0, 100)
                 )
