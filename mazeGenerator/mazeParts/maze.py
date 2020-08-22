@@ -1,11 +1,8 @@
-# import pygame
-# import pygame.gfxdraw
-# import random
+import random
 import pygame
 import pygame.gfxdraw
-import random
 from mazeGenerator.mazeParts.config import Colors, PygameVars as Pyv
-from mazeGenerator.mazeParts.DoublyLinkedList import Node, DoublyLinkedList
+from mazeGenerator.mazeParts.mystack import MyStack
 
 
 class Maze:
@@ -16,9 +13,11 @@ class Maze:
         self.COLS = False
         self.SIZE = False
 
-        self.doublyLL = DoublyLinkedList()
         self.maze = []
         self.current_cell = None
+
+        self.visited = []
+        self.stack = MyStack()
 
     def start(self, test=False):
         from mazeGenerator.mazeParts.border import Border
@@ -117,73 +116,37 @@ class Maze:
         # and drawing the border.
         self.border.draw()
 
-        # 2nd Part: The Algorithm Loop:
-        if len(self.maze) == 0:  # If there aren't any cells that are part of the maze
-            # choose one random cell, from the a random column in self.grid, and make it
-            # part of the maze.
-            self.maze.append(random.choice([cell for row in self.grid for cell in row]))
+        if all([not cell.visited for cell in self.allCells]):
+            self.current_cell = random.choice(self.allCells)
+            self.current_cell.visited = True
+            self.stack.push(self.current_cell)
 
-        # If there is a cell that is part of the maze or there is no current cell
-        if len(self.maze) != 0 or self.current_cell is None:
-            # create an array that contains all the cells that aren't part of the maze
-            cells_not_in_maze = [cell for row in self.grid for cell in row if cell not in self.maze]
-            # if there are cells not in the maze and the current cell is None
-            if cells_not_in_maze != [] and self.current_cell is None:
-                # choose a a cell from the cells that aren't in the maze and make it
-                # the current cell.
-                self.current_cell = random.choice(cells_not_in_maze)
-
+        # If there is a cell that is part of the maze or there isn't a current cell
+        if len(self.allCells) != 0 or self.current_cell is None:
             # For each row containing cells in the grid
             for row in self.grid:
                 # for each cell per row
                 for cell in row:
-                    # color the cells depending on their individual information
-                    cell.highlight()
-                    # and draw them on the screen (this will not display them though).
+                    # Draw them on the screen (this will not display them though).
                     cell.show()
 
-            # If there are cells in the maze and cells not in the maze
-            if len(self.maze) != 0 and cells_not_in_maze != []:
-                # add to a doubly-linked list, a node with the current cell as its value
-                self.doublyLL.add(Node(self.current_cell))
-
+            notVisited = [cell for cell in self.allCells if not cell.visited]
+            if notVisited != []:
                 # choose a random cell neighboring the current cell, as the future current cell
-                next_cell = self.current_cell.get_a_neighbor()
-
-                # assign the next cell as the current cell.
-                self.current_cell = next_cell
-
-                # If the next cell (or now current cell) is in the doubly-linked list
-                if next_cell in self.doublyLL.traverse(values=True):
-                    # Pop the last node of the doubly-linked list and return its value,
-                    # and then assign it to the popped_cell variable.
-                    popped_cell = self.doublyLL.pop().val
-                    # While the popped_cell isn't the next_cell (or current_cell)
-                    while popped_cell != next_cell:
-                        # Keep popping nodes with cell as values from the doubly-linked list.
-                        popped_cell = self.doublyLL.pop().val
-                # Else if the next cell (or now current_cell) is part of the maze
-                elif next_cell in self.maze:
-                    # create a node that has as value this next cell, and append this node
-                    # to the doubly-linked list.
-                    self.doublyLL.add(Node(next_cell))
-                    # While there is a node (with a cell) before the last node (with a cell)
-                    # in the doubly-linked list
-                    while self.doublyLL.peek().prev_nod is not None:
-                        # turn off walls between the cell of the second-to-last node and the cell
-                        # of the last node
-                        self.doublyLL.peek().prev_nod.val.remove_walls_with(self.doublyLL.peek().val)
-                        # Delete the last node containing the last cell of the doubly-linked list,
-                        # and make it at the same time part of the maze.
-                        self.maze.append(self.doublyLL.pop().val)
-                    # While there is no node before the last node of the doubly-linked list
-                    else:
-                        # Delete the last node containing the last cell of the doubly-linked list,
-                        # and make it at the same time part of the maze.
-                        self.maze.append(self.doublyLL.pop().val)
-
-                    # make the current cell equal to None.
-                    self.current_cell = None
+                if self.current_cell.unvisitedNeigh():
+                    nextCell = self.current_cell.getUnvNeigh()
+                    self.stack.push(nextCell)
+                    self.current_cell.remove_walls_with(nextCell)
+                    self.current_cell = nextCell
+                    self.current_cell.visited = True
+                elif self.stack.peek() is not None:
+                    self.current_cell = self.stack.pop()
+            else:
+                self.current_cell = None
 
         # 3rd Part: display everything that has been drawn.
         pygame.display.update()
+
+    @property
+    def allCells(self):
+        return [cell for row in self.grid for cell in row]
