@@ -1,3 +1,6 @@
+# import pygame
+# import pygame.gfxdraw
+# import random
 import pygame
 import pygame.gfxdraw
 import random
@@ -124,7 +127,7 @@ class Maze:
         if len(self.maze) != 0 or self.current_cell is None:
             # create an array that contains all the cells that aren't part of the maze
             cells_not_in_maze = [cell for row in self.grid for cell in row if cell not in self.maze]
-            # if there are cells that aren't in the maze or if there is no current cell
+            # if there are cells not in the maze and the current cell is None
             if cells_not_in_maze != [] and self.current_cell is None:
                 # choose a a cell from the cells that aren't in the maze and make it
                 # the current cell.
@@ -139,8 +142,7 @@ class Maze:
                     # and draw them on the screen (this will not display them though).
                     cell.show()
 
-            # If  there are no cells that are part of the maze and there are cells that are
-            # not part of the maze
+            # If there are cells in the maze and cells not in the maze
             if len(self.maze) != 0 and cells_not_in_maze != []:
                 # add to a doubly-linked list, a node with the current cell as its value
                 self.doublyLL.add(Node(self.current_cell))
