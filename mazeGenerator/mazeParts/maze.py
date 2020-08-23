@@ -2,6 +2,7 @@ import random
 import pygame
 import pygame.gfxdraw
 from mazeGenerator.mazeParts.config import Colors, PygameVars as Pyv
+from mazeGenerator.mazeParts.debugger import Debugger
 from mazeGenerator.mazeParts.mystack import MyStack
 
 
@@ -13,11 +14,12 @@ class Maze:
         self.COLS = False
         self.SIZE = False
 
-        self.maze = []
         self.current_cell = None
+        self.backtracking = False
 
         self.visited = []
         self.stack = MyStack()
+        self.goodStack = []
 
     def start(self, test=False):
         from mazeGenerator.mazeParts.border import Border
@@ -64,6 +66,65 @@ class Maze:
             # Call the draw() function.
             self.draw()
 
+    # This function can be divided into 3 parts:
+    # 1) The screen will be fully painted with the 'Colors.COLORS' variable,
+    # covering anything that was painted before. The frames per second will
+    # be set to the 'Pyv.SPEED' variable, and a border, coming from the 'Border'
+    # object, will ultimately draw itself on the screen, given that the coordinates
+    # of the top-left corner of the border object aren't (0, 0).
+    #
+    # 2) The actual maze-generation algorithm. You could swap this part with any other
+    # maze generation algorithm and in theory the program would work just fine. The
+    # algorithm used in this program is Wilson's, (...).
+    # 3) Display all the objects on the screen that were drawn before or during the
+    # procedure of the algorithm.
+    def draw(self):
+        # 1rst Part: Repainting the screen, setting the frames per second
+        Pyv.SCREEN.fill(Colors.BLACK)
+        Pyv.FPS.tick(Pyv.SPEED)
+
+        # and drawing the border.
+        self.border.draw()
+
+        if all([not cell.visited for cell in self.allCells]):
+            self.current_cell = random.choice(self.allCells)
+            self.current_cell.visited = True
+            # self.stack.push(self.current_cell)
+            self.goodStack.append(self.current_cell)
+
+        # For each row containing cells in the grid
+        for row in self.grid:
+            # for each cell per row
+            for cell in row:
+                # Draw them on the screen (this will not display them though).
+                if self.backtracking and cell == self.current_cell:
+                    cell.highlight(backtracking=self.backtracking)
+                else:
+                    cell.highlight()
+                cell.show()
+
+        self.backtracking = False
+        if any([not cell.visited for cell in self.allCells]):
+            # choose a random cell neighboring the current cell, as the future current cell
+            if self.current_cell.unvisitedNeigh():
+                nextCell = self.current_cell.getUnvNeigh()
+                # self.stack.push(nextCell)
+                self.current_cell.remove_walls_with(nextCell)
+                self.goodStack.append(nextCell)
+                nextCell.visited = True
+                self.current_cell = nextCell
+                # self.current_cell.visited = True
+            # elif self.stack.peek() is not None:
+            elif len(self.goodStack) > 0:
+                self.goodStack.pop()
+                self.current_cell = self.goodStack[-1]
+                self.backtracking = True
+        else:
+            self.current_cell = None
+
+        # 3rd Part: display everything that has been drawn.
+        pygame.display.update()
+
     # This function will create 'the_grid' variable, which will be a 2D-array
     # The amount of sub-arrays inside the 'the_grid' variable will be 'self.ROWS',
     # and each sub-array will have 'self.COLS' amount of 'Cell' objects.
@@ -95,57 +156,6 @@ class Maze:
         # Once there is a 'self.ROWS' amount of arrays in 'the_grid', we return
         # this 2D-array:
         return the_grid
-
-    # This function can be divided into 3 parts:
-    # 1) The screen will be fully painted with the 'Colors.COLORS' variable,
-    # covering anything that was painted before. The frames per second will
-    # be set to the 'Pyv.SPEED' variable, and a border, coming from the 'Border'
-    # object, will ultimately draw itself on the screen, given that the coordinates
-    # of the top-left corner of the border object aren't (0, 0).
-    #
-    # 2) The actual maze-generation algorithm. You could swap this part with any other
-    # maze generation algorithm and in theory the program would work just fine. The
-    # algorithm used in this program is Wilson's, (...).
-    # 3) Display all the objects on the screen that were drawn before or during the
-    # procedure of the algorithm.
-    def draw(self):
-        # 1rst Part: Repainting the screen, setting the frames per second
-        Pyv.SCREEN.fill(Colors.WHITE)
-        Pyv.FPS.tick(Pyv.SPEED)
-
-        # and drawing the border.
-        self.border.draw()
-
-        if all([not cell.visited for cell in self.allCells]):
-            self.current_cell = random.choice(self.allCells)
-            self.current_cell.visited = True
-            self.stack.push(self.current_cell)
-
-        # If there is a cell that is part of the maze or there isn't a current cell
-        if len(self.allCells) != 0 or self.current_cell is None:
-            # For each row containing cells in the grid
-            for row in self.grid:
-                # for each cell per row
-                for cell in row:
-                    # Draw them on the screen (this will not display them though).
-                    cell.show()
-
-            notVisited = [cell for cell in self.allCells if not cell.visited]
-            if notVisited != []:
-                # choose a random cell neighboring the current cell, as the future current cell
-                if self.current_cell.unvisitedNeigh():
-                    nextCell = self.current_cell.getUnvNeigh()
-                    self.stack.push(nextCell)
-                    self.current_cell.remove_walls_with(nextCell)
-                    self.current_cell = nextCell
-                    self.current_cell.visited = True
-                elif self.stack.peek() is not None:
-                    self.current_cell = self.stack.pop()
-            else:
-                self.current_cell = None
-
-        # 3rd Part: display everything that has been drawn.
-        pygame.display.update()
 
     @property
     def allCells(self):
