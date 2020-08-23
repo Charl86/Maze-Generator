@@ -1,4 +1,4 @@
-from mazeGenerator.maze.maze import Maze
+from mazeGenerator.maze import Maze
 
 
 mazeInstance = Maze()
