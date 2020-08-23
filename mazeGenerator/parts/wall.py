@@ -1,5 +1,5 @@
-from mazeGenerator.maze.maze import pygame
-from mazeGenerator.maze.config import Colors, PygameVars as Pyv
+from mazeGenerator.maze import pygame
+from mazeGenerator.config import Colors, PygameVars as Pyv
 
 
 # The Wall class

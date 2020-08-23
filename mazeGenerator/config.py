@@ -1,9 +1,9 @@
-from mazeGenerator.maze.maze import random
+from mazeGenerator.maze import random
 
 
 class PygameVars(object):
     WIDTH, HEIGHT = 400, 400
-    SPEED = 2
+    SPEED = 15
 
     SCREEN = None
     FPS = None
