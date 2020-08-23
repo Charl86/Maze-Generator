@@ -1,9 +1,8 @@
 import random
 import pygame
 import pygame.gfxdraw
-from mazeGenerator.mazeParts.config import Colors, PygameVars as Pyv
-from mazeGenerator.mazeParts.debugger import Debugger
-from mazeGenerator.mazeParts.mystack import MyStack
+from mazeGenerator.maze.config import Colors, PygameVars as Pyv
+from mazeGenerator.datast.mystack import MyStack
 
 
 class Maze:
@@ -22,7 +21,7 @@ class Maze:
         self.goodStack = []
 
     def start(self, test=False):
-        from mazeGenerator.mazeParts.border import Border
+        from mazeGenerator.maze.parts.border import Border
         from mazeGenerator.interface import Tkinter_Setup as Ts
 
         # Open Tkinter interface.
@@ -131,7 +130,7 @@ class Maze:
     # In the end, this function will return the 'the_grid' 2D-Array, containing
     # arrays, the latter which contain 'Cell' objects.
     def create_cells(self):
-        from mazeGenerator.mazeParts.cell import Cell
+        from mazeGenerator.maze.parts.cell import Cell
 
         the_grid = []  # Creation of the 2D-array.
         nth_row = []  # Creation of the nth-array to-be-appended to 'the_grid'.

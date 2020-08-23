@@ -1,7 +1,7 @@
 from mazeGenerator import mazeInstance
-from mazeGenerator.mazeParts.maze import pygame, random
-from mazeGenerator.mazeParts.wall import Wall
-from mazeGenerator.mazeParts.config import PygameVars as Pyv
+from mazeGenerator.maze.maze import pygame, random
+from mazeGenerator.maze.parts.wall import Wall
+from mazeGenerator.maze.config import PygameVars as Pyv
 
 
 # The Cell class.

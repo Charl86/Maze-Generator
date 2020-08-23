@@ -2,7 +2,7 @@ import logging
 
 
 class Debugger(object):
-    logFile = f"./mazeGenerator/logs/{__name__}.log"
+    logFile = f"./mazeGenerator/helpers/logs/{__name__}.log"
 
     formatter = logging.Formatter("%(message)s")
 
