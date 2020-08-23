@@ -18,7 +18,7 @@ class Wall:
         self.on = on
 
         # The color of the walls.
-        self.color = Colors.BLACK
+        self.color = Colors.WHITE
 
     # The show method that takes as argument the thickness of a wall.
     def show(self, thickness):

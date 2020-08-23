@@ -13,7 +13,7 @@ class Cell:
         self.y = y
 
         # Definition of some attributes:
-        self.thickness = 8  # set the thickness of the walls.
+        self.thickness = 5  # set the thickness of the walls.
 
         # Colors:
         # self.maze_cell_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
@@ -50,7 +50,7 @@ class Cell:
 
     # The method that shows the walls of a cell, if they are turned on.
     def show(self):
-        self.highlight()
+        # self.highlight()
         self.walls["top"].show(self.thickness)
         self.walls["right"].show(self.thickness)
         self.walls["bot"].show(self.thickness)
@@ -105,12 +105,6 @@ class Cell:
     # A getter that returns a list of the adjacent cells of self.
     @property
     def neighbors(self):
-        # possible_neighbors = []
-        # for row, col in [(self.y - 1, self.x), (self.y, self.x + 1), (self.y + 1, self.x), (self.y, self.x - 1)]:
-        #     if 0 <= row <= (ROWS - 1) and 0 <= col <= (COLS - 1):
-        #         possible_neighbors.append(mazeInstance.grid[row][col])
-        # return possible_neighbors
-
         # In order to get the adjacent cells, in theory we'd have 4 cases in which we add 1 to each coordinate
         # of the cell e.g. in order to get the top neighboring cell, you add -1 to the y-coordinate of the current cell;
         # in order to get the right neighboring cell, you only add 1 to the x-coordinate, and so on so forth.
@@ -119,28 +113,52 @@ class Cell:
         # the edge of the maze would only have 3 adjacent cells (2 if the cell is in one of the corners). Therefore, in
         # this list comprehension, we set a limit: if the coordinates of a new possible neighboring cell are outside of
         # the maze, then we intuitively discard it as a possible neighboring cell.
-        return [mazeInstance.grid[row][col] for row, col in
-                [(self.y - 1, self.x), (self.y, self.x + 1), (self.y + 1, self.x), (self.y, self.x - 1)]
-                if 0 <= row <= (mazeInstance.ROWS - 1) and 0 <= col <= (mazeInstance.COLS - 1)]
+        neighborCoords = [
+            (self.y - 1, self.x), (self.y, self.x + 1),
+            (self.y + 1, self.x), (self.y, self.x - 1)
+        ]
+        possibleNeighbors = []
+        for row, col in neighborCoords:
+            if 0 <= row <= (mazeInstance.ROWS - 1) and\
+                    0 <= col <= (mazeInstance.COLS - 1):
+                possibleNeighbors.append(mazeInstance.grid[row][col])
+        return possibleNeighbors
+        # return [mazeInstance.grid[row][col] for row, col in
+        #         [(self.y - 1, self.x), (self.y, self.x + 1), (self.y + 1, self.x), (self.y, self.x - 1)]
+        #         if 0 <= row <= (mazeInstance.ROWS - 1) and 0 <= col <= (mazeInstance.COLS - 1)]
 
     # Method that takes charge of dyeing the cells depending on which of the data structures
     # they belong to.
     def highlight(self, backtracking=False):
-        if self.visited and self != mazeInstance.current_cell:
-            # "Paint" it with self.trail_cells_color (basically draws a rectangle with the given color over the cell).
-            pygame.gfxdraw.box(Pyv.SCREEN, pygame.Rect(
-                self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.trail_cells_color)
-        if self == mazeInstance.current_cell and not backtracking:
-            # "Paint" it with the self.current_cell_color color.
+        if self.visited and not backtracking:
             pygame.gfxdraw.box(
                 Pyv.SCREEN, pygame.Rect(
-                    self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.current_cell_color
+                    self.spaced_out_x, self.spaced_out_y,
+                    mazeInstance.SIZE, mazeInstance.SIZE
+                ), self.trail_cells_color
+            )
+            if self == mazeInstance.current_cell:
+                pygame.gfxdraw.box(
+                    Pyv.SCREEN, pygame.Rect(
+                        self.spaced_out_x, self.spaced_out_y,
+                        mazeInstance.SIZE, mazeInstance.SIZE
+                    ), self.trail_cells_color
                 )
-        elif self == mazeInstance.current_cell and backtracking:
+        elif backtracking:
             pygame.gfxdraw.box(
-                Pyv.SCREEN,
-                pygame.Rect(
-                    self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE
-                ),
-                (155, 255, 0, 100)
+                    Pyv.SCREEN, pygame.Rect(
+                        self.spaced_out_x, self.spaced_out_y,
+                        mazeInstance.SIZE, mazeInstance.SIZE
+                    ), (100, 255, 0)
                 )
+            # pygame.gfxdraw.box(
+            #     Pyv.SCREEN, pygame.Rect(
+            #         self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.current_cell_color
+            #     )
+            # pygame.gfxdraw.box(
+            #     Pyv.SCREEN,
+            #     pygame.Rect(
+            #         self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE
+            #     ),
+            #     (155, 255, 0, 100)
+            #     )
