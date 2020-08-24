@@ -3,6 +3,7 @@ import pygame
 from mazeGenerator import mazeInstance
 from mazeGenerator.parts.wall import Wall
 from mazeGenerator.config import PygameVars as Pyv
+from mazeGenerator.config import Colors
 
 
 # The Cell class.
@@ -17,14 +18,7 @@ class Cell:
         # Definition of some attributes:
         self.thickness = 5  # set the thickness of the walls.
 
-        # Colors:
-        # self.maze_cell_color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
-        self.maze_cell_color = (0, 175, 255, 255)  # color for cells that are part of the maze
-        # self.maze_cell_color = (255, 255, 255, 255)
-        self.current_cell_color = (100, 0, 255, 125)  # color for current cell
-        self.trail_cells_color = (255, 0, 255, 100)  # color for cells in the doubly-linked list.
-
-        self.visited = False  # If a cell has been picked.
+        self.visited = False  # If a cell has been visited.
 
         # The actual coordinates with the "area" applied of a cell.
         self.spaced_out_x = self.x * self.size + mazeInstance.borderCoords
@@ -52,7 +46,6 @@ class Cell:
 
     # The method that shows the walls of a cell, if they are turned on.
     def show(self):
-        # self.highlight()
         self.walls["top"].show(self.thickness)
         self.walls["right"].show(self.thickness)
         self.walls["bot"].show(self.thickness)
@@ -125,27 +118,15 @@ class Cell:
                 possibleNeighbors.append(neighborhood[row][col])
         return possibleNeighbors
 
-    # Method that takes charge of dyeing the cells depending on which of the data structures
-    # they belong to.
     def highlight(self, currentCell=False, backtracking=False):
-        if self.visited and self != currentCell:
-            pygame.gfxdraw.box(
-                Pyv.SCREEN, pygame.Rect(
-                    self.spaced_out_x, self.spaced_out_y,
-                    self.size, self.size
-                ), self.trail_cells_color
-            )
+        if self != currentCell and self.visited:
+            pygame.gfxdraw.box(Pyv.SCREEN, self.rectanColor, Colors.trailCellC)
         elif self == currentCell:
-            pygame.gfxdraw.box(
-                Pyv.SCREEN, pygame.Rect(
-                    self.spaced_out_x, self.spaced_out_y,
-                    self.size, self.size
-                ), self.current_cell_color
-            )
-            if backtracking:
-                pygame.gfxdraw.box(
-                        Pyv.SCREEN, pygame.Rect(
-                            self.spaced_out_x, self.spaced_out_y,
-                            self.size, self.size
-                        ), (100, 255, 0)
-                    )
+            if not backtracking:
+                pygame.gfxdraw.box(Pyv.SCREEN, self.rectanColor, Colors.currCellC)
+            else:
+                pygame.gfxdraw.box(Pyv.SCREEN, self.rectanColor, Colors.backtracking)
+
+    @property
+    def rectanColor(self):
+        return pygame.Rect(self.spaced_out_x, self.spaced_out_y, self.size, self.size)

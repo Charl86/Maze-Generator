@@ -4,7 +4,6 @@ import pygame.gfxdraw
 from mazeGenerator import mazeInstance
 from mazeGenerator.config import Colors, PygameVars as Pyv
 from mazeGenerator.datast.mystack import MyStack
-
 from mazeGenerator.interface import Tkinter_Setup as Ts
 from mazeGenerator.parts.border import Border
 from mazeGenerator.parts.cell import Cell
@@ -13,14 +12,11 @@ from mazeGenerator.parts.cell import Cell
 class Generator:
     def __init__(self):
         self.maze = mazeInstance
+        self.stack = MyStack()
 
         self.grid = []
         self.current_cell = None
         self.backtracking = False
-
-        self.visited = []
-        self.stack = MyStack()
-        self.goodStack = []
 
     def start(self, test=False):
         # Open Tkinter interface.
@@ -64,18 +60,6 @@ class Generator:
             # Call the draw() function.
             self.draw()
 
-    # This function can be divided into 3 parts:
-    # 1) The screen will be fully painted with the 'Colors.COLORS' variable,
-    # covering anything that was painted before. The frames per second will
-    # be set to the 'Pyv.SPEED' variable, and a border, coming from the 'Border'
-    # object, will ultimately draw itself on the screen, given that the coordinates
-    # of the top-left corner of the border object aren't (0, 0).
-    #
-    # 2) The actual maze-generation algorithm. You could swap this part with any other
-    # maze generation algorithm and in theory the program would work just fine. The
-    # algorithm used in this program is Wilson's, (...).
-    # 3) Display all the objects on the screen that were drawn before or during the
-    # procedure of the algorithm.
     def draw(self):
         # 1rst Part: Repainting the screen, setting the frames per second
         Pyv.SCREEN.fill(Colors.BLACK)
@@ -87,17 +71,13 @@ class Generator:
         if all([not cell.visited for cell in self.allCells]):
             self.current_cell = random.choice(self.allCells)
             self.current_cell.visited = True
-            # self.stack.push(self.current_cell)
-            self.goodStack.append(self.current_cell)
+            self.stack.push(self.current_cell)
 
         # For each row containing cells in the grid
         for row in self.grid:
             # for each cell per row
             for cell in row:
                 # Draw them on the screen (this will not display them though).
-                # if self.backtracking and cell == self.current_cell:
-                #     cell.highlight(backtracking=self.backtracking)
-                # else:
                 cell.highlight(currentCell=self.current_cell, backtracking=self.backtracking)
                 cell.show()
 
@@ -106,16 +86,13 @@ class Generator:
             # choose a random cell neighboring the current cell, as the future current cell
             if self.current_cell.unvisitedNeigh(self.grid):
                 nextCell = self.current_cell.getUnvNeigh(self.grid)
-                # self.stack.push(nextCell)
                 self.current_cell.remove_walls_with(nextCell)
-                self.goodStack.append(nextCell)
+                self.stack.push(nextCell)
                 nextCell.visited = True
                 self.current_cell = nextCell
-                # self.current_cell.visited = True
-            # elif self.stack.peek() is not None:
-            elif len(self.goodStack) > 0:
-                self.goodStack.pop()
-                self.current_cell = self.goodStack[-1]
+            elif self.stack.peek() is not None:
+                self.stack.pop()
+                self.current_cell = self.stack.peek()
                 self.backtracking = True
         else:
             self.current_cell = None
@@ -123,13 +100,7 @@ class Generator:
         # 3rd Part: display everything that has been drawn.
         pygame.display.update()
 
-    # This function will create 'the_grid' variable, which will be a 2D-array
-    # The amount of sub-arrays inside the 'the_grid' variable will be 'self.ROWS',
-    # and each sub-array will have 'self.COLS' amount of 'Cell' objects.
-    # In the end, this function will return the 'the_grid' 2D-Array, containing
-    # arrays, the latter which contain 'Cell' objects.
     def create_cells(self):
-
         the_grid = []  # Creation of the 2D-array.
         nth_row = []  # Creation of the nth-array to-be-appended to 'the_grid'.
 

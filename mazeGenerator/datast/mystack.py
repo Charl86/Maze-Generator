@@ -39,6 +39,18 @@ class MyStack:
         else:
             return None
 
+    @property
+    def length(self):
+        if self.head is None:
+            return 0
+        else:
+            counter = 1
+            currNode = self.head
+            while currNode.nextNode is not None:
+                currNode = currNode.nextNode
+                counter += 1
+            return counter
+
     def __str__(self):
         vals = []
         if self.head is None:
