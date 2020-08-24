@@ -1,4 +1,3 @@
-from mazeGenerator import mazeInstance
 from mazeGenerator.maze import pygame, random
 from mazeGenerator.parts.wall import Wall
 from mazeGenerator.config import PygameVars as Pyv
@@ -8,9 +7,10 @@ from mazeGenerator.config import PygameVars as Pyv
 class Cell:
     # Takes as arguments an x and y coordinate, that represent the coordinates of the
     # top-left corner of the cell.
-    def __init__(self, x, y):
+    def __init__(self, x, y, size, borderCoord):
         self.x = x
         self.y = y
+        self.size = size
 
         # Definition of some attributes:
         self.thickness = 5  # set the thickness of the walls.
@@ -26,24 +26,24 @@ class Cell:
 
         # The actual coordinates with the "area" applied of a cell.
         self.spaced_out_x, self.spaced_out_y =\
-            self.x * mazeInstance.SIZE + mazeInstance.BORDER, self.y * mazeInstance.SIZE + mazeInstance.BORDER
+            self.x * self.size + borderCoord, self.y * self.size + borderCoord
 
         # The walls of a cell:
         self.walls = {
             "top": Wall(
                 (self.spaced_out_x, self.spaced_out_y),
-                (self.spaced_out_x + mazeInstance.SIZE, self.spaced_out_y)
+                (self.spaced_out_x + self.size, self.spaced_out_y)
                     ),
             "right": Wall(
-                (self.spaced_out_x + mazeInstance.SIZE, self.spaced_out_y),
-                (self.spaced_out_x + mazeInstance.SIZE, self.spaced_out_y + mazeInstance.SIZE)
+                (self.spaced_out_x + self.size, self.spaced_out_y),
+                (self.spaced_out_x + self.size, self.spaced_out_y + self.size)
                     ),
             "bot": Wall(
-                (self.spaced_out_x + mazeInstance.SIZE, self.spaced_out_y + mazeInstance.SIZE),
-                (self.spaced_out_x, self.spaced_out_y + mazeInstance.SIZE)
+                (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
+                (self.spaced_out_x, self.spaced_out_y + self.size)
                     ),
             "left": Wall(
-                (self.spaced_out_x, self.spaced_out_y + mazeInstance.SIZE),
+                (self.spaced_out_x, self.spaced_out_y + self.size),
                 (self.spaced_out_x, self.spaced_out_y)
                     )
                 }
@@ -93,18 +93,17 @@ class Cell:
             other.walls["top"].on = False
 
     # Method for choosing a random adjacent neighbor.
-    def getUnvNeigh(self):
-        return random.choice([uv for uv in self.neighbors if not uv.visited])
+    def getUnvNeigh(self, neighborhood):
+        return random.choice([uv for uv in self.neighbors(neighborhood) if not uv.visited])
 
-    def unvisitedNeigh(self):
-        if any([not neighbor.visited for neighbor in self.neighbors]):
+    def unvisitedNeigh(self, neighborhood):
+        if any([not neighbor.visited for neighbor in self.neighbors(neighborhood)]):
             return True
         else:
             return False
 
     # A getter that returns a list of the adjacent cells of self.
-    @property
-    def neighbors(self):
+    def neighbors(self, neighborhood):
         # In order to get the adjacent cells, in theory we'd have 4 cases in which we add 1 to each coordinate
         # of the cell e.g. in order to get the top neighboring cell, you add -1 to the y-coordinate of the current cell;
         # in order to get the right neighboring cell, you only add 1 to the x-coordinate, and so on so forth.
@@ -119,46 +118,32 @@ class Cell:
         ]
         possibleNeighbors = []
         for row, col in neighborCoords:
-            if 0 <= row <= (mazeInstance.ROWS - 1) and\
-                    0 <= col <= (mazeInstance.COLS - 1):
-                possibleNeighbors.append(mazeInstance.grid[row][col])
+            if 0 <= row <= (len(neighborhood) - 1) and\
+                    0 <= col <= (len(neighborhood[row]) - 1):
+                possibleNeighbors.append(neighborhood[row][col])
         return possibleNeighbors
-        # return [mazeInstance.grid[row][col] for row, col in
-        #         [(self.y - 1, self.x), (self.y, self.x + 1), (self.y + 1, self.x), (self.y, self.x - 1)]
-        #         if 0 <= row <= (mazeInstance.ROWS - 1) and 0 <= col <= (mazeInstance.COLS - 1)]
 
     # Method that takes charge of dyeing the cells depending on which of the data structures
     # they belong to.
-    def highlight(self, backtracking=False):
-        if self.visited and not backtracking:
+    def highlight(self, currentCell=False, backtracking=False):
+        if self.visited and self != currentCell:
             pygame.gfxdraw.box(
                 Pyv.SCREEN, pygame.Rect(
                     self.spaced_out_x, self.spaced_out_y,
-                    mazeInstance.SIZE, mazeInstance.SIZE
+                    self.size, self.size
                 ), self.trail_cells_color
             )
-            if self == mazeInstance.current_cell:
-                pygame.gfxdraw.box(
-                    Pyv.SCREEN, pygame.Rect(
-                        self.spaced_out_x, self.spaced_out_y,
-                        mazeInstance.SIZE, mazeInstance.SIZE
-                    ), self.trail_cells_color
-                )
-        elif backtracking:
+        elif self == currentCell:
             pygame.gfxdraw.box(
-                    Pyv.SCREEN, pygame.Rect(
-                        self.spaced_out_x, self.spaced_out_y,
-                        mazeInstance.SIZE, mazeInstance.SIZE
-                    ), (100, 255, 0)
-                )
-            # pygame.gfxdraw.box(
-            #     Pyv.SCREEN, pygame.Rect(
-            #         self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE), self.current_cell_color
-            #     )
-            # pygame.gfxdraw.box(
-            #     Pyv.SCREEN,
-            #     pygame.Rect(
-            #         self.spaced_out_x, self.spaced_out_y, mazeInstance.SIZE, mazeInstance.SIZE
-            #     ),
-            #     (155, 255, 0, 100)
-            #     )
+                Pyv.SCREEN, pygame.Rect(
+                    self.spaced_out_x, self.spaced_out_y,
+                    self.size, self.size
+                ), self.current_cell_color
+            )
+            if backtracking:
+                pygame.gfxdraw.box(
+                        Pyv.SCREEN, pygame.Rect(
+                            self.spaced_out_x, self.spaced_out_y,
+                            self.size, self.size
+                        ), (100, 255, 0)
+                    )

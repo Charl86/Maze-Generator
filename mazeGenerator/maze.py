@@ -13,7 +13,7 @@ class Maze:
         self.COLS = False
         self.SIZE = False
 
-        self.current_cell = None
+        # self.current_cell = None
         self.backtracking = False
 
         self.visited = []
@@ -31,7 +31,7 @@ class Maze:
             raise SystemExit
 
         # Create a border with coordinates self.BORDER.
-        self.border = Border(self.BORDER, self.BORDER)
+        self.border = Border(self.BORDER, self.BORDER, self)
 
         # Calculate size of the screen based on the size of the border.
         Pyv.WIDTH = self.border.horizon_length + 2 * self.BORDER
@@ -96,17 +96,17 @@ class Maze:
             # for each cell per row
             for cell in row:
                 # Draw them on the screen (this will not display them though).
-                if self.backtracking and cell == self.current_cell:
-                    cell.highlight(backtracking=self.backtracking)
-                else:
-                    cell.highlight()
+                # if self.backtracking and cell == self.current_cell:
+                #     cell.highlight(backtracking=self.backtracking)
+                # else:
+                cell.highlight(currentCell=self.current_cell, backtracking=self.backtracking)
                 cell.show()
 
         self.backtracking = False
         if any([not cell.visited for cell in self.allCells]):
             # choose a random cell neighboring the current cell, as the future current cell
-            if self.current_cell.unvisitedNeigh():
-                nextCell = self.current_cell.getUnvNeigh()
+            if self.current_cell.unvisitedNeigh(self.grid):
+                nextCell = self.current_cell.getUnvNeigh(self.grid)
                 # self.stack.push(nextCell)
                 self.current_cell.remove_walls_with(nextCell)
                 self.goodStack.append(nextCell)
@@ -140,7 +140,7 @@ class Maze:
             for col in range(self.COLS):  # For each 'Cell' object per array:
                 # We create a new 'Cell' object, whose coordinates are its
                 # index position within the 'the_grid' 2D-array:
-                new_cell = Cell(col, row)
+                new_cell = Cell(col, row, self.SIZE, self.BORDER)
 
                 # Then we append it to the nth-array within the 'the_grid' 2D-array:
                 nth_row.append(new_cell)

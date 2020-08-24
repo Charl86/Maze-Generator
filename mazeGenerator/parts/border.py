@@ -1,4 +1,3 @@
-from mazeGenerator import mazeInstance
 from mazeGenerator.maze import pygame
 from mazeGenerator.config import Colors, PygameVars as Pyv
 
@@ -6,9 +5,10 @@ from mazeGenerator.config import Colors, PygameVars as Pyv
 class Border:
     # Takes as arguments an x and y coordinate, that represent the coordinates of the
     # top-left corner of the cell.
-    def __init__(self, x, y):
+    def __init__(self, x, y, master):
         self.x = x
         self.y = y
+        self.master = master
 
         # Corners of the border.
         # self.top_left_corn = self.x, self.y
@@ -17,8 +17,8 @@ class Border:
         # self.bot_right_corn = self.x + Pyv.WIDTH - 2 * self.x, self.y + Pyv.HEIGHT - 2 * self.y
 
         # Dimensions of border
-        self.horizon_length = mazeInstance.COLS * mazeInstance.SIZE
-        self.vertical_length = mazeInstance.ROWS * mazeInstance.SIZE
+        self.horizon_length = self.master.COLS * self.master.SIZE
+        self.vertical_length = self.master.ROWS * self.master.SIZE
         # self.horizon_length = Pyv.WIDTH - 2 * self.x
         # self.vertical_length = Pyv.WIDTH - 2 * self.y
 
