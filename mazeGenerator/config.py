@@ -15,3 +15,7 @@ class Colors(object):
     ASPHALT = (49, 49, 49)
     RED = (255, 0, 0)
     RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
+
+    currCellC = (100, 0, 255, 125)
+    trailCellC = (255, 0, 255, 100)
+    backtracking = (150, 255, 0, 255)
