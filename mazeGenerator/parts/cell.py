@@ -1,4 +1,6 @@
-from mazeGenerator.maze import pygame, random
+import random
+import pygame
+from mazeGenerator import mazeInstance
 from mazeGenerator.parts.wall import Wall
 from mazeGenerator.config import PygameVars as Pyv
 
@@ -7,7 +9,7 @@ from mazeGenerator.config import PygameVars as Pyv
 class Cell:
     # Takes as arguments an x and y coordinate, that represent the coordinates of the
     # top-left corner of the cell.
-    def __init__(self, x, y, size, borderCoord):
+    def __init__(self, x, y, size):
         self.x = x
         self.y = y
         self.size = size
@@ -25,8 +27,8 @@ class Cell:
         self.visited = False  # If a cell has been picked.
 
         # The actual coordinates with the "area" applied of a cell.
-        self.spaced_out_x, self.spaced_out_y =\
-            self.x * self.size + borderCoord, self.y * self.size + borderCoord
+        self.spaced_out_x = self.x * self.size + mazeInstance.borderCoords
+        self.spaced_out_y = self.y * self.size + mazeInstance.borderCoords
 
         # The walls of a cell:
         self.walls = {

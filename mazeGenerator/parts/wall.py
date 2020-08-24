@@ -1,4 +1,4 @@
-from mazeGenerator.maze import pygame
+import pygame
 from mazeGenerator.config import Colors, PygameVars as Pyv
 
 

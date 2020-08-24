@@ -1,4 +1,4 @@
-from mazeGenerator.maze import random
+import random
 
 
 class PygameVars(object):

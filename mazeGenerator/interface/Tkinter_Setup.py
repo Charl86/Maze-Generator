@@ -151,11 +151,6 @@ class TkinterWindow:
 
         elif not self.validate_cell_size(col_entry, row_entry, cell_size_number):
             pass
-        # Else if the numbers for the columns and rows entries are within bounds but not the number
-        # of the cell size entry.
-        # elif not (10 <= int(cell_size_number) <= 150):
-        #     # display a message stating the condition.
-        #     self.info_label_text.set("The cell size must be an integer from 10 to 150 (inclusive).")
 
         # Else, this means that the entries passed all the validation tests
         else:
@@ -171,16 +166,16 @@ class TkinterWindow:
 
             # let the variables of rows, columns and cell size be equal to
             # the respective entry values.
-            mazeInstance.COLS, mazeInstance.ROWS = int(col_entry), int(row_entry)
-            mazeInstance.SIZE = int(cell_size_number)
+            mazeInstance.cols, mazeInstance.rows = int(col_entry), int(row_entry)
+            mazeInstance.size = int(cell_size_number)
         # Else
         else:
             # set the state of the generation button to disabled
             self.gene_butt.configure(state="disabled")
 
             # reset the value of the columns and rows and cell size
-            mazeInstance.COLS, mazeInstance.ROWS = None, None
-            mazeInstance.SIZE = None
+            mazeInstance.cols, mazeInstance.rows = None, None
+            mazeInstance.size = None
         # Repeat this method after self.delay milliseconds.
         self.master.after(self.delay, self.enable_button)
 
