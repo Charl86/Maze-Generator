@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
-from mazeGenerator import mazeInstance
 
 
-class TkinterWindow:
-    def __init__(self, master):
+class TkMenu:
+    def __init__(self, mSettings, master=tk.Tk()):
+        self.mSettings = mSettings
         self.master = master  # The Tkinter instance.
 
         # The delay that will be applied to Tkinter using the self.enable_button() method.
@@ -166,16 +166,16 @@ class TkinterWindow:
 
             # let the variables of rows, columns and cell size be equal to
             # the respective entry values.
-            mazeInstance.cols, mazeInstance.rows = int(col_entry), int(row_entry)
-            mazeInstance.size = int(cell_size_number)
+            self.mSettings.cols, self.mSettings.rows = int(col_entry), int(row_entry)
+            self.mSettings.size = int(cell_size_number)
         # Else
         else:
             # set the state of the generation button to disabled
             self.gene_butt.configure(state="disabled")
 
             # reset the value of the columns and rows and cell size
-            mazeInstance.cols, mazeInstance.rows = None, None
-            mazeInstance.size = None
+            self.mSettings.cols, self.mSettings.rows = None, None
+            self.mSettings.size = None
         # Repeat this method after self.delay milliseconds.
         self.master.after(self.delay, self.enable_button)
 
@@ -206,12 +206,16 @@ class TkinterWindow:
     def padding_func(self, cols_or_rows):
         return int(round(161.89079 * 0.9006 ** cols_or_rows + 18.69355))
 
+    def loop(self):
+        self.master.mainloop()
 
-def start_loop():
-    root = tk.Tk()  # Create a Tk() object.
-    TkinterWindow(root)  # Run the TkinterWindow class with the 'root' variable as argument.
-    root.mainloop()  # Start the Tk() loop.
+
+# def start_loop():
+#     root = tk.Tk()  # Create a Tk() object.
+#     TkMenu(root)  # Run the TkMenu class with the 'root' variable as argument.
+#     root.mainloop()  # Start the Tk() loop.
 
 
 if __name__ == "__main__":
-    start_loop()
+    pass
+    # start_loop()

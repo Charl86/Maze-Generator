@@ -1,45 +1,36 @@
 import random
 import pygame
 import pygame.gfxdraw
-from mazeGenerator import mazeInstance
-from mazeGenerator.config import Colors, PygameVars as Pyv
 from mazeGenerator.datast.mystack import MyStack
-from mazeGenerator.interface import Tkinter_Setup as Ts
-from mazeGenerator.parts.border import Border
-from mazeGenerator.parts.cell import Cell
+from mazeGenerator.maze.border import Border
+from mazeGenerator.maze.cell import Cell
 
 
 class Generator:
-    def __init__(self):
-        self.maze = mazeInstance
+    def __init__(self, mSettings):
+        self.mSettings = mSettings
         self.stack = MyStack()
 
         self.grid = []
         self.current_cell = None
         self.backtracking = False
 
-    def start(self, test=False):
-        # Open Tkinter interface.
-        Ts.start_loop()
-
-        if test is True:
-            raise SystemExit
-
+    def run(self):
         # Create a border with coordinates self.BORDER.
-        self.maze.border = Border(self.maze.borderCoords, self.maze.borderCoords)
+        self.mSettings.border = Border(self.mSettings.borderCoords, self.mSettings.borderCoords)
 
         # Calculate size of the screen based on the size of the border.
-        Pyv.WIDTH = self.maze.border.horizon_length + 2 * self.maze.borderCoords
-        Pyv.HEIGHT = self.maze.border.vertical_length + 2 * self.maze.borderCoords
+        self.mSettings.PygameVars.WIDTH = self.mSettings.border.horizon_length + 2 * self.mSettings.borderCoords
+        self.mSettings.PygameVars.HEIGHT = self.mSettings.border.vertical_length + 2 * self.mSettings.borderCoords
 
         # Initiate pygame module.
         pygame.init()
 
-        # Create a Screen() object with width Pyv.WIDTH and height Pyv.HEIGHT.
-        Pyv.SCREEN = pygame.display.set_mode((Pyv.WIDTH, Pyv.HEIGHT))
+        # Create a Screen() object with width self.mSettings.WIDTH and height self.mSettings.HEIGHT.
+        self.mSettings.PygameVars.SCREEN = pygame.display.set_mode((self.mSettings.PygameVars.WIDTH, self.mSettings.PygameVars.HEIGHT))
 
         # Create a Clock() object; basically the frames per second.
-        Pyv.FPS = pygame.time.Clock()
+        self.mSettings.PygameVars.FPS = pygame.time.Clock()
 
         # Create all the cells with their respective rows and store them in self.grid.
         self.grid = self.create_cells()
@@ -62,11 +53,11 @@ class Generator:
 
     def draw(self):
         # 1rst Part: Repainting the screen, setting the frames per second
-        Pyv.SCREEN.fill(Colors.BLACK)
-        Pyv.FPS.tick(Pyv.SPEED)
+        self.mSettings.PygameVars.SCREEN.fill(self.mSettings.Colors.BLACK)
+        self.mSettings.PygameVars.FPS.tick(self.mSettings.PygameVars.SPEED)
 
         # and drawing the border.
-        self.maze.border.draw()
+        self.mSettings.border.draw()
 
         if all([not cell.visited for cell in self.allCells]):
             self.current_cell = random.choice(self.allCells)
@@ -105,11 +96,11 @@ class Generator:
         nth_row = []  # Creation of the nth-array to-be-appended to 'the_grid'.
 
         # For each array in 'self.ROWS' amount:
-        for row in range(self.maze.rows):
-            for col in range(self.maze.cols):  # For each 'Cell' object per array:
+        for row in range(self.mSettings.rows):
+            for col in range(self.mSettings.cols):  # For each 'Cell' object per array:
                 # We create a new 'Cell' object, whose coordinates are its
                 # index position within the 'the_grid' 2D-array:
-                new_cell = Cell(col, row, self.maze.size)
+                new_cell = Cell(col, row, self.mSettings.size)
 
                 # Then we append it to the nth-array within the 'the_grid' 2D-array:
                 nth_row.append(new_cell)
@@ -128,3 +119,7 @@ class Generator:
     @property
     def allCells(self):
         return [cell for row in self.grid for cell in row]
+
+
+if __name__ == "__main__":
+    pass
