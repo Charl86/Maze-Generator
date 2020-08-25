@@ -60,23 +60,14 @@ class TkMenu:
 
         self.suggestion_label.grid(column=1, columnspan=2, row=4, sticky=(tk.W, tk.E), padx=[13, 0], pady=3)
 
-        # self.nums_rows_text.grid(column=0, row=1, sticky=tk.W, padx=10)
-        # self.nums_cols_text.grid(column=0, row=2, sticky=tk.W, padx=10)
-        # self.cell_size_text.grid(column=0, row=3, sticky=tk.W, padx=10, pady=4)
-
         self.nums_rows_text.grid(column=0, row=1, sticky=tk.W)
         self.nums_cols_text.grid(column=0, row=2, sticky=tk.W)
         self.cell_size_text.grid(column=0, row=3, sticky=tk.W)
-
-        # self.rows_entry.grid(column=1, row=1, sticky=(tk.W, tk.E))
-        # self.cols_entry.grid(column=1, row=2, sticky=(tk.W, tk.E))
-        # self.cell_size_entry.grid(column=1, row=3, sticky=(tk.W, tk.E))
 
         self.rows_entry.grid(column=1, row=1, sticky=(tk.W, tk.E), padx=[15, 0])
         self.cols_entry.grid(column=1, row=2, sticky=(tk.W, tk.E), padx=[15, 0])
         self.cell_size_entry.grid(column=1, row=3, sticky=(tk.W, tk.E), padx=[15, 0], pady=[3, 0])
 
-        # self.gene_butt.grid(column=3, row=1, sticky=tk.E)
         self.gene_butt.grid(column=6, row=1)
 
         # Column & Row configure:
@@ -94,10 +85,6 @@ class TkMenu:
         self.frame_1.rowconfigure(2, weight=1)
         self.frame_1.rowconfigure(3, weight=1)
         self.frame_1.rowconfigure(4, weight=1)
-
-        # self.master.columnconfigure(3, minsize=20)
-        # self.master.columnconfigure(4, minsize=20)
-        # self.master.columnconfigure(5, minsize=20)
 
         # Bindings:
         self.rows_entry.bind("<Return>", self.generate)
@@ -210,12 +197,5 @@ class TkMenu:
         self.master.mainloop()
 
 
-# def start_loop():
-#     root = tk.Tk()  # Create a Tk() object.
-#     TkMenu(root)  # Run the TkMenu class with the 'root' variable as argument.
-#     root.mainloop()  # Start the Tk() loop.
-
-
 if __name__ == "__main__":
     pass
-    # start_loop()

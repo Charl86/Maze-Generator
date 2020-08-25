@@ -118,12 +118,12 @@ class Cell:
 
     def highlight(self, currentCell=False, backtracking=False):
         if self != currentCell and self.visited:
-            pygame.gfxdraw.box(mazeSettings.PygameVars.SCREEN, self.rectanColor, mazeSettings.Colors.trailCellC)
+            pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.trailCellC)
         elif self == currentCell:
             if not backtracking:
-                pygame.gfxdraw.box(mazeSettings.PygameVars.SCREEN, self.rectanColor, mazeSettings.Colors.currCellC)
+                pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.currCellC)
             else:
-                pygame.gfxdraw.box(mazeSettings.PygameVars.SCREEN, self.rectanColor, mazeSettings.Colors.backtracking)
+                pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.backtracking)
 
     @property
     def rectanColor(self):

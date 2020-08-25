@@ -2,7 +2,7 @@ import random
 
 
 class Settings:
-    class PygameVars:
+    class PyGv:
         WIDTH, HEIGHT = 400, 400
         SPEED = 2
 
