@@ -30,6 +30,6 @@ class Border:
         #         (self.x, self.y), (Pyv.WIDTH - 2 * self.x, Pyv.HEIGHT - 2 * self.y)),
         #                      self.thickness)
         if self.x or self.y:
-            pygame.draw.rect(mazeSettings.PygameVars.SCREEN, self.color, pygame.Rect(
+            pygame.draw.rect(mazeSettings.PyGv.SCREEN, self.color, pygame.Rect(
                 (self.x, self.y), (self.horizon_length, self.vertical_length)),
                              self.thickness)

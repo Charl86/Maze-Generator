@@ -24,4 +24,4 @@ class Wall:
     def show(self, thickness):
         if self.on:
             # Drawing of the wall.
-            pygame.draw.line(mazeSettings.PygameVars.SCREEN, self.color, self.A, self.B, thickness)
+            pygame.draw.line(mazeSettings.PyGv.SCREEN, self.color, self.A, self.B, thickness)

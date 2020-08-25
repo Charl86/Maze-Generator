@@ -20,17 +20,21 @@ class Generator:
         self.mSettings.border = Border(self.mSettings.borderCoords, self.mSettings.borderCoords)
 
         # Calculate size of the screen based on the size of the border.
-        self.mSettings.PygameVars.WIDTH = self.mSettings.border.horizon_length + 2 * self.mSettings.borderCoords
-        self.mSettings.PygameVars.HEIGHT = self.mSettings.border.vertical_length + 2 * self.mSettings.borderCoords
+        self.mSettings.PyGv.WIDTH = \
+            self.mSettings.border.horizon_length + 2 * self.mSettings.borderCoords
+        self.mSettings.PyGv.HEIGHT = \
+            self.mSettings.border.vertical_length + 2 * self.mSettings.borderCoords
 
         # Initiate pygame module.
         pygame.init()
 
         # Create a Screen() object with width self.mSettings.WIDTH and height self.mSettings.HEIGHT.
-        self.mSettings.PygameVars.SCREEN = pygame.display.set_mode((self.mSettings.PygameVars.WIDTH, self.mSettings.PygameVars.HEIGHT))
+        self.mSettings.PyGv.SCREEN = pygame.display.set_mode(
+            (self.mSettings.PyGv.WIDTH, self.mSettings.PyGv.HEIGHT)
+        )
 
         # Create a Clock() object; basically the frames per second.
-        self.mSettings.PygameVars.FPS = pygame.time.Clock()
+        self.mSettings.PyGv.FPS = pygame.time.Clock()
 
         # Create all the cells with their respective rows and store them in self.grid.
         self.grid = self.create_cells()
@@ -53,8 +57,8 @@ class Generator:
 
     def draw(self):
         # 1rst Part: Repainting the screen, setting the frames per second
-        self.mSettings.PygameVars.SCREEN.fill(self.mSettings.Colors.BLACK)
-        self.mSettings.PygameVars.FPS.tick(self.mSettings.PygameVars.SPEED)
+        self.mSettings.PyGv.SCREEN.fill(self.mSettings.Colors.BLACK)
+        self.mSettings.PyGv.FPS.tick(self.mSettings.PyGv.SPEED)
 
         # and drawing the border.
         self.mSettings.border.draw()
