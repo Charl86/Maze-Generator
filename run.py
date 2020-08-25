@@ -1,6 +1,5 @@
-from mazeGenerator import mazeInstance
-from mazeGenerator.parts import mazeGene
+from mazeGenerator import app
 
 
 if __name__ == "__main__":
-    mazeGene.start(test=False)
+    app.run()

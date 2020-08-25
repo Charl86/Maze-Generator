@@ -1,5 +1,5 @@
 import pygame
-from mazeGenerator.config import Colors, PygameVars as Pyv
+from mazeGenerator.maze import mazeSettings
 
 
 # The Wall class
@@ -18,10 +18,10 @@ class Wall:
         self.on = on
 
         # The color of the walls.
-        self.color = Colors.WHITE
+        self.color = mazeSettings.Colors.WHITE
 
     # The show method that takes as argument the thickness of a wall.
     def show(self, thickness):
         if self.on:
             # Drawing of the wall.
-            pygame.draw.line(Pyv.SCREEN, self.color, self.A, self.B, thickness)
+            pygame.draw.line(mazeSettings.PygameVars.SCREEN, self.color, self.A, self.B, thickness)

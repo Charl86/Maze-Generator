@@ -1,9 +1,7 @@
 import random
 import pygame
-from mazeGenerator import mazeInstance
-from mazeGenerator.parts.wall import Wall
-from mazeGenerator.config import PygameVars as Pyv
-from mazeGenerator.config import Colors
+from mazeGenerator.maze import mazeSettings
+from mazeGenerator.maze.wall import Wall
 
 
 # The Cell class.
@@ -20,9 +18,9 @@ class Cell:
 
         self.visited = False  # If a cell has been visited.
 
-        # The actual coordinates with the "area" applied of a cell.
-        self.spaced_out_x = self.x * self.size + mazeInstance.borderCoords
-        self.spaced_out_y = self.y * self.size + mazeInstance.borderCoords
+        # The actual coordinates with the side length applied of a cell.
+        self.spaced_out_x = self.x * self.size + mazeSettings.borderCoords
+        self.spaced_out_y = self.y * self.size + mazeSettings.borderCoords
 
         # The walls of a cell:
         self.walls = {
@@ -120,12 +118,12 @@ class Cell:
 
     def highlight(self, currentCell=False, backtracking=False):
         if self != currentCell and self.visited:
-            pygame.gfxdraw.box(Pyv.SCREEN, self.rectanColor, Colors.trailCellC)
+            pygame.gfxdraw.box(mazeSettings.PygameVars.SCREEN, self.rectanColor, mazeSettings.Colors.trailCellC)
         elif self == currentCell:
             if not backtracking:
-                pygame.gfxdraw.box(Pyv.SCREEN, self.rectanColor, Colors.currCellC)
+                pygame.gfxdraw.box(mazeSettings.PygameVars.SCREEN, self.rectanColor, mazeSettings.Colors.currCellC)
             else:
-                pygame.gfxdraw.box(Pyv.SCREEN, self.rectanColor, Colors.backtracking)
+                pygame.gfxdraw.box(mazeSettings.PygameVars.SCREEN, self.rectanColor, mazeSettings.Colors.backtracking)
 
     @property
     def rectanColor(self):
