@@ -4,10 +4,9 @@ from mazeGenerator.maze import mazeSettings
 
 # The Wall class
 class Wall:
-    # takes as arguments two points: A and B which are tuples. A will be the starting point
-    # of the line and B will be its ending point.
-    # It also takes as argument the "on" status, which defaults to True if no argument is given
-    # this means that the wall starts as turned on, and get turned off when the remove_walls_with() method is called
+    # Takes arguments A and B which are expected to be tubles representing a starting
+    # and ending point. Also recieves a boolean argument that determines whether the
+    # wall should be drawn or not.
     def __init__(self, A, B, on=True):
         self.A, self.B = A, B
         # Validating that tuples are actually given as A and B.
@@ -20,8 +19,8 @@ class Wall:
         # The color of the walls.
         self.color = mazeSettings.Colors.WHITE
 
-    # The show method that takes as argument the thickness of a wall.
+    # Method that draws a wall using thickness parameter for thickness.
     def show(self, thickness):
-        if self.on:
-            # Drawing of the wall.
+        if self.on:  # If wall is turned on
+            # Draw wall
             pygame.draw.line(mazeSettings.PyGv.SCREEN, self.color, self.A, self.B, thickness)
