@@ -4,7 +4,7 @@ import random
 class Settings:
     class PyGv:
         WIDTH, HEIGHT = 400, 400
-        SPEED = 2
+        SPEED = 30
 
         SCREEN = None
         FPS = None

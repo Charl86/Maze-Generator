@@ -1,28 +1,26 @@
 import random
+import math
 import pygame
 from mazeGenerator.maze import mazeSettings
 from mazeGenerator.maze.wall import Wall
 
 
-# The Cell class.
+# Cell class
 class Cell:
-    # Takes as arguments an x and y coordinate, that represent the coordinates of the
-    # top-left corner of the cell.
+    # Takes 3 arguments: x and y coordinates in 2D-grid and size (width and height).
     def __init__(self, x, y, size):
         self.x = x
         self.y = y
         self.size = size
 
-        # Definition of some attributes:
-        self.thickness = 5  # set the thickness of the walls.
-
+        self.thickness = 5  # Wall thickness.
         self.visited = False  # If a cell has been visited.
 
-        # The actual coordinates with the side length applied of a cell.
-        self.spaced_out_x = self.x * self.size + mazeSettings.borderCoords
-        self.spaced_out_y = self.y * self.size + mazeSettings.borderCoords
+        # The coordinates on the display window, not the 2D-grid.
+        self.spaced_out_x = self.size * self.x + mazeSettings.borderCoords
+        self.spaced_out_y = self.size * self.y + mazeSettings.borderCoords
 
-        # The walls of a cell:
+        # Walls initialization:
         self.walls = {
             "top": Wall(
                 (self.spaced_out_x, self.spaced_out_y),
@@ -42,69 +40,45 @@ class Cell:
                     )
                 }
 
-    # The method that shows the walls of a cell, if they are turned on.
+    # Draw cell walls
     def show(self):
         self.walls["top"].show(self.thickness)
         self.walls["right"].show(self.thickness)
         self.walls["bot"].show(self.thickness)
         self.walls["left"].show(self.thickness)
 
-    # Method turns off the walls between two cells
+    # Remove walls between self and other
     def remove_walls_with(self, other):
-        # the difference between the coordinates of the two walls
+        # Take the difference between self.x, other.x and self.y, other.y.
         x_difference, y_difference = self.x - other.x, self.y - other.y
 
-        # The coordinate of the cells are stored before applying their "area".
-        # This means that the left-top corners of the cells (the coordinates) are one unit
-        # beside each other, e.g. Cell_1: (0, 0), Cell_2: (1, 0), Cell_3: (2, 0), etc.
-
-        # If the difference in x, defined as self.x - other.x, is 1, then that means
-        # that self.x is greater than other.x by 1, meaning that self.x is to the right of other.x
-        if x_difference == 1:
-            # therefore, we turn off the left wall of self and the right wall of other
+        if x_difference == 1:  # If other is to the right of self, remove corresponding walls.
             self.walls["left"].on = False
             other.walls["right"].on = False
-        # If the x_difference is -1, then self.x is lesser than other.x by 1,
-        # meaning that self is to the left of other
-        elif x_difference == -1:
-            # we then turn off the walls between them.
+        elif x_difference == -1:  # If other is to the left of self, remove walls.
             self.walls["right"].on = False
             other.walls["left"].on = False
 
-        # Likewise, if the y_difference between self.y and other.y is 1, that means
-        # that self.y is greater than other.y by 1, meaning that self is below
-        # other (by the way coordinates work on pygame. It would be equivalent to using the
-        # fourth quadrant in a cartesian plane with the y-axis turned positive).
-        if y_difference == 1:
-            # we turn off the walls between them.
+        if y_difference == 1:  # If other is above self, remove corresponding walls.
             self.walls["top"].on = False
             other.walls["bot"].on = False
-        # If the y_difference is -1, then self is above other
-        elif y_difference == -1:
-            # and we turn off the respective walls between them.
+        elif y_difference == -1:  # If other is bellow self, remove walls.
             self.walls["bot"].on = False
             other.walls["top"].on = False
 
-    # Method for choosing a random adjacent neighbor.
+    # Choose a random unvisited neighbor of self from the neighborhood (the 2D-grid)
     def getUnvNeigh(self, neighborhood):
         return random.choice([uv for uv in self.neighbors(neighborhood) if not uv.visited])
 
+    # Determine if self has unvisited neighbors
     def unvisitedNeigh(self, neighborhood):
         if any([not neighbor.visited for neighbor in self.neighbors(neighborhood)]):
             return True
         else:
             return False
 
-    # A getter that returns a list of the adjacent cells of self.
+    # Get all neighbors
     def neighbors(self, neighborhood):
-        # In order to get the adjacent cells, in theory we'd have 4 cases in which we add 1 to each coordinate
-        # of the cell e.g. in order to get the top neighboring cell, you add -1 to the y-coordinate of the current cell;
-        # in order to get the right neighboring cell, you only add 1 to the x-coordinate, and so on so forth.
-
-        # But what happens when you have to get the neighboring cells of a cell on the edge of the maze. A cell on
-        # the edge of the maze would only have 3 adjacent cells (2 if the cell is in one of the corners). Therefore, in
-        # this list comprehension, we set a limit: if the coordinates of a new possible neighboring cell are outside of
-        # the maze, then we intuitively discard it as a possible neighboring cell.
         neighborCoords = [
             (self.y - 1, self.x), (self.y, self.x + 1),
             (self.y + 1, self.x), (self.y, self.x - 1)
@@ -116,15 +90,16 @@ class Cell:
                 possibleNeighbors.append(neighborhood[row][col])
         return possibleNeighbors
 
+    # Highlight self based on parameters
     def highlight(self, currentCell=False, backtracking=False):
-        if self != currentCell and self.visited:
+        if self != currentCell and self.visited:  # If self is not current cell and was visited
             pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.trailCellC)
-        elif self == currentCell:
-            if not backtracking:
+        elif self == currentCell:  # If cell is current cell
+            if not backtracking:  # If generator is not bactracking
                 pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.currCellC)
             else:
                 pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.backtracking)
 
-    @property
+    @property  # Highlight size.
     def rectanColor(self):
         return pygame.Rect(self.spaced_out_x, self.spaced_out_y, self.size, self.size)
