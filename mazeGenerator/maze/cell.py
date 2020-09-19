@@ -66,10 +66,6 @@ class Cell:
             self.walls["bot"].on = False
             other.walls["top"].on = False
 
-    # Choose a random unvisited neighbor of self from the neighborhood (the 2D-grid)
-    def getUnvNeigh(self, neighborhood):
-        return random.choice([uv for uv in self.neighbors(neighborhood) if not uv.visited])
-
     # Determine if self has unvisited neighbors
     def unvisitedNeigh(self, neighborhood):
         if any([not neighbor.visited for neighbor in self.neighbors(neighborhood)]):
@@ -77,18 +73,29 @@ class Cell:
         else:
             return False
 
+    # Choose a random unvisited neighbor of self from the neighborhood (the 2D-grid)
+    def getUnvNeigh(self, neighborhood):
+        return random.choice([uv for uv in self.neighbors(neighborhood) if not uv.visited])
+
     # Get all neighbors
     def neighbors(self, neighborhood):
         neighborCoords = [
             (self.y - 1, self.x), (self.y, self.x + 1),
             (self.y + 1, self.x), (self.y, self.x - 1)
         ]
+
         possibleNeighbors = []
         for row, col in neighborCoords:
-            if 0 <= row <= (len(neighborhood) - 1) and\
-                    0 <= col <= (len(neighborhood[row]) - 1):
+            if 0 <= row < neighborhood.height and\
+                    0 <= col < neighborhood.width:
                 possibleNeighbors.append(neighborhood[row][col])
         return possibleNeighbors
+        # possibleNeighbors = []
+        # for row, col in neighborCoords:
+        #     if 0 <= row <= (len(neighborhood) - 1) and\
+        #             0 <= col <= (len(neighborhood[row]) - 1):
+        #         possibleNeighbors.append(neighborhood[row][col])
+        # return possibleNeighbors
 
     # Highlight self based on parameters
     def highlight(self, currentCell=False, backtracking=False):
