@@ -4,6 +4,7 @@ import pygame.gfxdraw
 from mazeGenerator.datast.mystack import MyStack
 from mazeGenerator.maze.border import Border
 from mazeGenerator.maze.cell import Cell
+from mazeGenerator.maze.grid import Grid
 
 
 class Generator:
@@ -11,11 +12,15 @@ class Generator:
         self.mSettings = mSettings  # Maze configurations.
         self.stack = MyStack()  # An instance of MyStack class.
 
-        self.grid = []  # The grid of cells.
+        self.grid = Grid()  # The grid that contains all cells.
         self.current_cell = None  # Current cell.
         self.backtracking = False  # If generator is backtracking.
 
     def run(self):
+        # Save width and height of grid in Grid object.
+        self.grid.width = self.mSettings.cols
+        self.grid.height = self.mSettings.rows
+
         # Create a border with top-left coordinates (self.borderCoords, self.borderCoords).
         self.mSettings.border = Border(self.mSettings.borderCoords, self.mSettings.borderCoords)
 
@@ -37,7 +42,7 @@ class Generator:
         self.mSettings.PyGv.FPS = pygame.time.Clock()
 
         # Create all the cells with their respective rows and store them in self.grid.
-        self.grid = self.create_cells()
+        self.grid.elements = self.create_cells()
 
         # Disable the left wall of the first cell.
         self.grid[0][0].walls["left"].on = False
