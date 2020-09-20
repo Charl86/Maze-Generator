@@ -7,7 +7,7 @@ from mazeGenerator.maze.wall import Wall
 # Cell class
 class Cell:
     # Takes 3 arguments: x and y coordinates in 2D-grid and size (width and height).
-    def __init__(self, x, y, mSettings):
+    def __init__(self, x, y, mSettings, **kwargs):
         self.x = x
         self.y = y
         self.size = mSettings.size
@@ -19,6 +19,14 @@ class Cell:
         # The coordinates on the display window, not the 2D-grid.
         self.spaced_out_x = self.size * self.x + self.mSettings.borderCoords
         self.spaced_out_y = self.size * self.y + self.mSettings.borderCoords
+
+        self.trailCellC = (0, 150, 255)  # Trail color.
+        self.currCellC = (255, 0, 255)  # Current cell color.
+        self.backtC = (255, 255, 0)  # Backtracking color.
+
+        for key in kwargs:
+            if key in self.__dict__:
+                self.__dict__[key] = kwargs[key]
 
         # Walls initialization:
         self.walls = {
@@ -95,18 +103,18 @@ class Cell:
     def highlight(self, currentCell=False, backtracking=False):
         if self != currentCell and self.visited:  # If self is not current cell and was visited
             pygame.gfxdraw.box(
-                self.mSettings.PyGv.SCREEN, self.rectanColor, self.mSettings.Colors.trailCellC
+                self.mSettings.PyGv.SCREEN, self.rectangle, self.trailCellC
             )
         elif self == currentCell:  # If cell is current cell
             if not backtracking:  # If generator is not bactracking
                 pygame.gfxdraw.box(
-                    self.mSettings.PyGv.SCREEN, self.rectanColor, self.mSettings.Colors.currCellC
+                    self.mSettings.PyGv.SCREEN, self.rectangle, self.currCellC
                 )
             else:
                 pygame.gfxdraw.box(
-                    self.mSettings.PyGv.SCREEN, self.rectanColor, self.mSettings.Colors.backtracking
+                    self.mSettings.PyGv.SCREEN, self.rectangle, self.backtC
                 )
 
-    @property  # Highlight size.
-    def rectanColor(self):
+    @property  # Highlight area.
+    def rectangle(self):
         return pygame.Rect(self.spaced_out_x, self.spaced_out_y, self.size, self.size)
