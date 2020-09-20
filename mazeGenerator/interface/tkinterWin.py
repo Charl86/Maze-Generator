@@ -37,13 +37,10 @@ class TkMenu:
         self.suggestion_label = ttk.Label(self.frame_1, textvariable=self.suggested_text_val)
 
         # Create an entry object with the value of the num_of_cols variable.
-        # self.rows_entry = ttk.Entry(self.frame_1, width=1, textvariable=self.num_of_cols)
         self.rows_entry = ttk.Entry(self.frame_1, width=5, textvariable=self.num_of_cols)
         # Create an entry object with the value of the num_of_rows variable.
-        # self.cols_entry = ttk.Entry(self.frame_1, width=1, textvariable=self.num_of_rows)
         self.cols_entry = ttk.Entry(self.frame_1, width=5, textvariable=self.num_of_rows)
         # Create an entry object with the value of the cell_size variable.
-        # self.cell_size_entry = ttk.Entry(self.frame_1, width=1, textvariable=self.cell_size)
         self.cell_size_entry = ttk.Entry(self.frame_1, width=5, textvariable=self.cell_size)
 
         # Create the button object bind to the method generate().
@@ -52,9 +49,7 @@ class TkMenu:
         # Griding:
         self.frame_1.grid(column=0, row=0, sticky=(tk.N, tk.W, tk.E, tk.S))
 
-        # self.title_text.grid(column=0, row=0, pady=15, columnspan=4)
         self.title_text.grid(column=0, row=0, pady=15, columnspan=7)
-        # self.validation_text.grid(column=2, row=1, rowspan=2, padx=20)
         self.validation_text.grid(column=3, columnspan=3, row=1, rowspan=3, padx=[10, 0],
                                   sticky=(tk.W, tk.N, tk.W, tk.S))
 
@@ -111,6 +106,7 @@ class TkMenu:
             # = math.floor((Pyv.WIDTH - 2 * Vars.BORDER) / Vars.COLS)
             self.master.destroy()  # kill the window.
 
+    # Enable button if correct conditions are met.
     def enable_button(self):
         # Get the values of the entries and store them in the given variables.
         col_entry, row_entry = self.num_of_cols.get(), self.num_of_rows.get()
@@ -166,6 +162,7 @@ class TkMenu:
         # Repeat this method after self.delay milliseconds.
         self.master.after(self.delay, self.enable_button)
 
+    # Validate size inserted in size entry
     def validate_cell_size(self, col_nums, row_nums, cell_size_entry_val):
         self.info_label_text.set("")
 
@@ -183,19 +180,21 @@ class TkMenu:
         return False
 
     def on_closing(self):
-        # If the close button is pressed (x button at the top-right corner),
-        # close the window.
+        # If the close button is pressed (x button at the top-right corner), close the window.
         raise SystemExit
 
+    # Return the size of the Tkinter Window.
     def get_wind_size(self):
         return self.master.winfo_width(), self.master.winfo_height()
 
+    # Estimate an ideal maze window size.
     def padding_func(self, cols_or_rows):
         return int(round(161.89079 * 0.9006 ** cols_or_rows + 18.69355))
 
+    # Start Tkinter Window loop.
     def loop(self):
         self.master.mainloop()
 
 
 if __name__ == "__main__":
-    pass
+    print("Hello World")
