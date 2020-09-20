@@ -110,3 +110,10 @@ class Generator:
     @property
     def allCells(self):  # Return list of all cells in grid.
         return [cell for row in self.grid for cell in row]
+
+
+# Unit Test:
+if __name__ == "__main__":
+    from mazeGenerator.maze.settings import Settings
+
+    Generator(Settings(cols=10, rows=10, size=76, borderCoords=20, width=780, height=780, speed=12)).run()
