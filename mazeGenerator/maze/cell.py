@@ -7,37 +7,37 @@ from mazeGenerator.maze.wall import Wall
 # Cell class
 class Cell:
     # Takes 3 arguments: x and y coordinates in 2D-grid and size (width and height).
-    def __init__(self, x, y, size, mazeSettings):
+    def __init__(self, x, y, mSettings):
         self.x = x
         self.y = y
-        self.size = size
-        self.mazeSettings = mazeSettings
+        self.size = mSettings.size
+        self.mSettings = mSettings
 
         self.thickness = 5  # Wall thickness.
         self.visited = False  # If a cell has been visited.
 
         # The coordinates on the display window, not the 2D-grid.
-        self.spaced_out_x = self.size * self.x + self.mazeSettings.borderCoords
-        self.spaced_out_y = self.size * self.y + self.mazeSettings.borderCoords
+        self.spaced_out_x = self.size * self.x + self.mSettings.borderCoords
+        self.spaced_out_y = self.size * self.y + self.mSettings.borderCoords
 
         # Walls initialization:
         self.walls = {
             "top": Wall(
                 (self.spaced_out_x, self.spaced_out_y),
                 (self.spaced_out_x + self.size, self.spaced_out_y),
-                self.mazeSettings),
+                self.mSettings),
             "right": Wall(
                 (self.spaced_out_x + self.size, self.spaced_out_y),
                 (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
-                self.mazeSettings),
+                self.mSettings),
             "bot": Wall(
                 (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
                 (self.spaced_out_x, self.spaced_out_y + self.size),
-                self.mazeSettings),
+                self.mSettings),
             "left": Wall(
                 (self.spaced_out_x, self.spaced_out_y + self.size),
                 (self.spaced_out_x, self.spaced_out_y),
-                self.mazeSettings)
+                self.mSettings)
                 }
 
     # Draw cell walls
@@ -95,16 +95,16 @@ class Cell:
     def highlight(self, currentCell=False, backtracking=False):
         if self != currentCell and self.visited:  # If self is not current cell and was visited
             pygame.gfxdraw.box(
-                self.mazeSettings.PyGv.SCREEN, self.rectanColor, self.mazeSettings.Colors.trailCellC
+                self.mSettings.PyGv.SCREEN, self.rectanColor, self.mSettings.Colors.trailCellC
             )
         elif self == currentCell:  # If cell is current cell
             if not backtracking:  # If generator is not bactracking
                 pygame.gfxdraw.box(
-                    self.mazeSettings.PyGv.SCREEN, self.rectanColor, self.mazeSettings.Colors.currCellC
+                    self.mSettings.PyGv.SCREEN, self.rectanColor, self.mSettings.Colors.currCellC
                 )
             else:
                 pygame.gfxdraw.box(
-                    self.mazeSettings.PyGv.SCREEN, self.rectanColor, self.mazeSettings.Colors.backtracking
+                    self.mSettings.PyGv.SCREEN, self.rectanColor, self.mSettings.Colors.backtracking
                 )
 
     @property  # Highlight size.
