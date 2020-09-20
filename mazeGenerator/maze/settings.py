@@ -1,29 +1,34 @@
 import random
 
 
+class PyGv:
+    def __init__(self, width=400, height=0, speed=30):
+        self.WIDTH, self.HEIGHT = width, height
+        self.SPEED = speed
+
+        self.SCREEN = None
+        self.FPS = None
+
+
+class Colors:
+    def __init__(self):
+        self.WHITE = (255, 255, 255)
+        self.BLACK = (0, 0, 0)
+        self.ASPHALT = (49, 49, 49)
+        self.RED = (255, 0, 0)
+        self.RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
+
+        self.currCellC = (100, 0, 255, 125)
+        self.trailCellC = (255, 0, 255, 100)
+        self.backtracking = (150, 255, 0, 255)
+
+
 class Settings:
-    class PyGv:
-        WIDTH, HEIGHT = 400, 400
-        SPEED = 30
-
-        SCREEN = None
-        FPS = None
-
-    class Colors:
-        WHITE = (255, 255, 255)
-        BLACK = (0, 0, 0)
-        ASPHALT = (49, 49, 49)
-        RED = (255, 0, 0)
-        RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
-
-        currCellC = (100, 0, 255, 125)
-        trailCellC = (255, 0, 255, 100)
-        backtracking = (150, 255, 0, 255)
-
-    def __init__(self, rows=None, cols=None, size=None, borderCoords=20):
+    def __init__(self, rows=None, cols=None, size=None, borderCoords=20, speed=30):
         self.rows = rows
         self.cols = cols
         self.size = size
         self.borderCoords = borderCoords
 
-        self.border = None
+        self.PyGv = PyGv(speed=speed)
+        self.Colors = Colors()

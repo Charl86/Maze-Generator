@@ -1,43 +1,43 @@
 import random
 import math
 import pygame
-from mazeGenerator.maze import mazeSettings
 from mazeGenerator.maze.wall import Wall
 
 
 # Cell class
 class Cell:
     # Takes 3 arguments: x and y coordinates in 2D-grid and size (width and height).
-    def __init__(self, x, y, size):
+    def __init__(self, x, y, size, mazeSettings):
         self.x = x
         self.y = y
         self.size = size
+        self.mazeSettings = mazeSettings
 
         self.thickness = 5  # Wall thickness.
         self.visited = False  # If a cell has been visited.
 
         # The coordinates on the display window, not the 2D-grid.
-        self.spaced_out_x = self.size * self.x + mazeSettings.borderCoords
-        self.spaced_out_y = self.size * self.y + mazeSettings.borderCoords
+        self.spaced_out_x = self.size * self.x + self.mazeSettings.borderCoords
+        self.spaced_out_y = self.size * self.y + self.mazeSettings.borderCoords
 
         # Walls initialization:
         self.walls = {
             "top": Wall(
                 (self.spaced_out_x, self.spaced_out_y),
-                (self.spaced_out_x + self.size, self.spaced_out_y)
-                    ),
+                (self.spaced_out_x + self.size, self.spaced_out_y),
+                self.mazeSettings),
             "right": Wall(
                 (self.spaced_out_x + self.size, self.spaced_out_y),
-                (self.spaced_out_x + self.size, self.spaced_out_y + self.size)
-                    ),
+                (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
+                self.mazeSettings),
             "bot": Wall(
                 (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
-                (self.spaced_out_x, self.spaced_out_y + self.size)
-                    ),
+                (self.spaced_out_x, self.spaced_out_y + self.size),
+                self.mazeSettings),
             "left": Wall(
                 (self.spaced_out_x, self.spaced_out_y + self.size),
-                (self.spaced_out_x, self.spaced_out_y)
-                    )
+                (self.spaced_out_x, self.spaced_out_y),
+                self.mazeSettings)
                 }
 
     # Draw cell walls
@@ -86,8 +86,8 @@ class Cell:
 
         possibleNeighbors = []
         for row, col in neighborCoords:
-            if 0 <= row < neighborhood.height and\
-                    0 <= col < neighborhood.width:
+            if 0 <= row <= neighborhood.height - 1 and\
+                    0 <= col <= neighborhood.width - 1:
                 possibleNeighbors.append(neighborhood[row][col])
         return possibleNeighbors
         # possibleNeighbors = []
@@ -100,12 +100,18 @@ class Cell:
     # Highlight self based on parameters
     def highlight(self, currentCell=False, backtracking=False):
         if self != currentCell and self.visited:  # If self is not current cell and was visited
-            pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.trailCellC)
+            pygame.gfxdraw.box(
+                self.mazeSettings.PyGv.SCREEN, self.rectanColor, self.mazeSettings.Colors.trailCellC
+            )
         elif self == currentCell:  # If cell is current cell
             if not backtracking:  # If generator is not bactracking
-                pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.currCellC)
+                pygame.gfxdraw.box(
+                    self.mazeSettings.PyGv.SCREEN, self.rectanColor, self.mazeSettings.Colors.currCellC
+                )
             else:
-                pygame.gfxdraw.box(mazeSettings.PyGv.SCREEN, self.rectanColor, mazeSettings.Colors.backtracking)
+                pygame.gfxdraw.box(
+                    self.mazeSettings.PyGv.SCREEN, self.rectanColor, self.mazeSettings.Colors.backtracking
+                )
 
     @property  # Highlight size.
     def rectanColor(self):
