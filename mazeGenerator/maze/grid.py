@@ -1,6 +1,7 @@
 from mazeGenerator.maze.cell import Cell
 
 
+# The Grid class
 class Grid:
     def __init__(self):
         self.elements = []  # 2D-Array.
@@ -23,19 +24,24 @@ class Grid:
             # Clear row for next colums iteration.
             nth_row = []
 
+    # Get width of grid.
     @property
     def width(self):
         return len(self.elements[0])
 
+    # Get height of grid.
     @property
     def height(self):
         return len(self.elements)
 
+    # Add lists of cells to grid.
     def append(self):
         self.elements.append
 
+    # Define square brackets operator for Grid object.
     def __getitem__(self, key):
         return self.elements[key]
 
+    # Define the 'in' operator for Grid object.
     def __contains__(self, item):
         return item in self.elements
