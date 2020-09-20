@@ -6,7 +6,7 @@ class Wall:
     # Takes arguments A and B which are expected to be tubles representing a starting
     # and ending point. Also recieves a boolean argument that determines whether the
     # wall should be drawn or not. Receives settings for customizations.
-    def __init__(self, A, B, mSettings, on=True):
+    def __init__(self, A, B, mSettings, on=True, **kwargs):
         self.A, self.B = A, B
         # Validating that tuples are actually given as A and B.
         if not isinstance(self.A, tuple) or not isinstance(self.B, tuple):
@@ -17,7 +17,11 @@ class Wall:
         self.on = on
 
         # The color of the walls.
-        self.color = self.mSettings.Colors.WHITE
+        self.color = (0, 0, 0)
+
+        for key in kwargs:
+            if key in self.__dict__:
+                self.__dict__[key] = kwargs[key]
 
     # Method that draws a wall using thickness parameter for thickness.
     def show(self, thickness):
