@@ -86,16 +86,9 @@ class Cell:
 
         possibleNeighbors = []
         for row, col in neighborCoords:
-            if 0 <= row <= neighborhood.height - 1 and\
-                    0 <= col <= neighborhood.width - 1:
+            if 0 <= row <= neighborhood.height - 1 and 0 <= col <= neighborhood.width - 1:
                 possibleNeighbors.append(neighborhood[row][col])
         return possibleNeighbors
-        # possibleNeighbors = []
-        # for row, col in neighborCoords:
-        #     if 0 <= row <= (len(neighborhood) - 1) and\
-        #             0 <= col <= (len(neighborhood[row]) - 1):
-        #         possibleNeighbors.append(neighborhood[row][col])
-        # return possibleNeighbors
 
     # Highlight self based on parameters
     def highlight(self, currentCell=False, backtracking=False):
