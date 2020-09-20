@@ -13,8 +13,10 @@ class Generator:
         self.stack = MyStack()  # An instance of MyStack class.
 
         self.grid = Grid()  # The grid that contains all cells.
+
         self.current_cell = None  # Current cell.
         self.backtracking = False  # If generator is backtracking.
+        self.border = None  # Border object.
 
     def run(self):
         # Save width and height of grid in Grid object.
@@ -22,13 +24,15 @@ class Generator:
         self.grid.height = self.mSettings.rows
 
         # Create a border with top-left coordinates (self.borderCoords, self.borderCoords).
-        self.mSettings.border = Border(self.mSettings.borderCoords, self.mSettings.borderCoords)
+        self.border = Border(
+            self.mSettings.borderCoords, self.mSettings.borderCoords, self.mSettings
+        )
 
         # Calculate size of the screen based on the size of the border and its coordinates.
         self.mSettings.PyGv.WIDTH = \
-            self.mSettings.border.horizon_length + 2 * self.mSettings.borderCoords
+            self.border.horizon_length + 2 * self.mSettings.borderCoords
         self.mSettings.PyGv.HEIGHT = \
-            self.mSettings.border.vertical_length + 2 * self.mSettings.borderCoords
+            self.border.vertical_length + 2 * self.mSettings.borderCoords
 
         # Initiate pygame module.
         pygame.init()
@@ -65,7 +69,7 @@ class Generator:
         self.mSettings.PyGv.FPS.tick(self.mSettings.PyGv.SPEED)
 
         # Draw border, if there is any.
-        self.mSettings.border.draw()
+        self.border.draw()
 
         # If no cell has been visited out of all cells
         if all([not cell.visited for cell in self.allCells]):
@@ -115,7 +119,7 @@ class Generator:
         for row in range(self.mSettings.rows):
             for col in range(self.mSettings.cols):  # For col in number of cols:
                 # Create Cell object with coordinates (col, row) and given size in settings.
-                new_cell = Cell(col, row, self.mSettings.size)
+                new_cell = Cell(col, row, self.mSettings.size, self.mSettings)
 
                 # Append new cell to current row.
                 nth_row.append(new_cell)
