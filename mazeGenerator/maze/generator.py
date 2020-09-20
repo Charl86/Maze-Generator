@@ -3,7 +3,6 @@ import pygame
 import pygame.gfxdraw
 from mazeGenerator.datast.mystack import MyStack
 from mazeGenerator.maze.border import Border
-from mazeGenerator.maze.cell import Cell
 from mazeGenerator.maze.grid import Grid
 
 
@@ -43,7 +42,7 @@ class Generator:
         self.mSettings.PyGv.FPS = pygame.time.Clock()
 
         # Create all the cells with their respective rows and store them in self.grid.
-        self.grid.elements = self.create_cells()
+        self.grid.populateGrid(self.mSettings)
 
         # Disable the left wall of the first cell.
         self.grid[0][0].walls["left"].on = False
@@ -107,27 +106,6 @@ class Generator:
 
         # Display everything that has been drawn on canvas.
         pygame.display.update()
-
-    def create_cells(self):
-        the_grid = []  # Creation of the 2D-array.
-        nth_row = []  # Creation of the nth-array to-be-appended to 'the_grid'.
-
-        # For row in number of rows:
-        for row in range(self.mSettings.rows):
-            for col in range(self.mSettings.cols):  # For col in number of cols:
-                # Create Cell object with coordinates (col, row) and pass in settings.
-                new_cell = Cell(col, row, self.mSettings)
-
-                # Append new cell to current row.
-                nth_row.append(new_cell)
-
-            # Append current row to grid.
-            the_grid.append(nth_row)
-
-            # Clear row for next colums iteration.
-            nth_row = []
-
-        return the_grid
 
     @property
     def allCells(self):  # Return list of all cells in grid.
