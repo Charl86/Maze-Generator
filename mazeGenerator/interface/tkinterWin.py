@@ -194,7 +194,3 @@ class TkMenu:
     # Start Tkinter Window loop.
     def loop(self):
         self.master.mainloop()
-
-
-if __name__ == "__main__":
-    print("Hello World")
