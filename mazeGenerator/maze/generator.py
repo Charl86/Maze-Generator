@@ -20,6 +20,7 @@ class Generator:
 
     def run(self):
         # Create a border with top-left coordinates (self.borderCoords, self.borderCoords).
+        # Pass in settings.
         self.border = Border(
             self.mSettings.borderCoords, self.mSettings.borderCoords, self.mSettings
         )
@@ -114,8 +115,8 @@ class Generator:
         # For row in number of rows:
         for row in range(self.mSettings.rows):
             for col in range(self.mSettings.cols):  # For col in number of cols:
-                # Create Cell object with coordinates (col, row) and given size in settings.
-                new_cell = Cell(col, row, self.mSettings.size, self.mSettings)
+                # Create Cell object with coordinates (col, row) and pass in settings.
+                new_cell = Cell(col, row, self.mSettings)
 
                 # Append new cell to current row.
                 nth_row.append(new_cell)
