@@ -1,11 +1,16 @@
 
 
 class Grid:
-    def __init__(self, width=None, height=None):
-        self.width = width
-        self.height = height
-
+    def __init__(self):
         self.elements = []
+
+    @property
+    def width(self):
+        return len(self.elements[0])
+
+    @property
+    def height(self):
+        return len(self.elements)
 
     def append(self):
         self.elements.append

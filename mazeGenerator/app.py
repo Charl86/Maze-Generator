@@ -5,7 +5,7 @@ from mazeGenerator.maze.generator import Generator
 
 class App:
     def __init__(self):
-        self.mSettings = Settings(speed=30)
+        self.mSettings = Settings(speed=2)
         self.tkinterWin = TkMenu(self.mSettings)
         self.generator = Generator(self.mSettings)
 

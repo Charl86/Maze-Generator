@@ -19,10 +19,6 @@ class Generator:
         self.border = None  # Border object.
 
     def run(self):
-        # Save width and height of grid in Grid object.
-        self.grid.width = self.mSettings.cols
-        self.grid.height = self.mSettings.rows
-
         # Create a border with top-left coordinates (self.borderCoords, self.borderCoords).
         self.border = Border(
             self.mSettings.borderCoords, self.mSettings.borderCoords, self.mSettings
