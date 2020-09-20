@@ -6,9 +6,14 @@ from mazeGenerator.maze.generator import Generator
 # App class
 class App:
     def __init__(self):
-        self.mSettings = Settings(speed=15)  # Initialize Settings object.
-        self.tkinterWin = TkMenu(self.mSettings)  # Initialize Tkinter Menu object.
-        self.generator = Generator(self.mSettings)  # Initialize [Maze] Generator object.
+        # Initialize Settings object.
+        self.mSettings = Settings(speed=7)
+
+        # Initialize Tkinter Menu object.
+        self.tkinterWin = TkMenu(self.mSettings)
+
+        # Initialize [Maze] Generator object.
+        self.generator = Generator(self.mSettings, self.mSettings.Colors.WHITE)
 
     # Runs app.
     def run(self, debug=False):
