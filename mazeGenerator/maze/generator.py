@@ -1,15 +1,15 @@
 import random
 import pygame
 import pygame.gfxdraw
-from mazeGenerator.datast.mystack import MyStack
+from mazeGenerator.datast.stack import Stack
 from mazeGenerator.maze.border import Border
 from mazeGenerator.maze.grid import Grid
 
 
 class Generator:
-    def __init__(self, mSettings):
+    def __init__(self, mSettings, canvasC=(0, 0, 0)):
         self.mSettings = mSettings  # Maze configurations.
-        self.stack = MyStack()  # An instance of MyStack class.
+        self.stack = Stack()  # An instance of MyStack class.
 
         self.grid = Grid()  # The grid that contains all cells.
 
@@ -17,11 +17,13 @@ class Generator:
         self.backtracking = False  # If generator is backtracking.
         self.border = None  # Border object.
 
+        self.canvasC = canvasC  # Color of canvas.
+
     def run(self):
         # Create a border with top-left coordinates (self.borderCoords, self.borderCoords).
         # Pass in settings.
         self.border = Border(
-            self.mSettings.borderCoords, self.mSettings.borderCoords, self.mSettings
+            self.mSettings.borderCoords, self.mSettings.borderCoords, self.mSettings,
         )
 
         # Calculate size of the screen based on the size of the border and its coordinates.
@@ -61,7 +63,7 @@ class Generator:
 
     def draw(self):
         # Fill the screen with desired color and set the FPS to the desired speed.
-        self.mSettings.PyGv.SCREEN.fill(self.mSettings.Colors.BLACK)
+        self.mSettings.PyGv.SCREEN.fill(self.canvasC)
         self.mSettings.PyGv.FPS.tick(self.mSettings.PyGv.SPEED)
 
         # Draw border, if there is any.
