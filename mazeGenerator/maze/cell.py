@@ -79,15 +79,16 @@ class Cell:
 
     # Get all neighbors
     def neighbors(self, neighborhood):
-        neighborCoords = [
-            (self.y - 1, self.x), (self.y, self.x + 1),
-            (self.y + 1, self.x), (self.y, self.x - 1)
-        ]
-
         possibleNeighbors = []
-        for row, col in neighborCoords:
-            if 0 <= row <= neighborhood.height - 1 and 0 <= col <= neighborhood.width - 1:
-                possibleNeighbors.append(neighborhood[row][col])
+        for i in range(4):
+            # Get cardinal points centered at (self.x, self.y), in order to get
+            # neighbors' coordinates.
+            newX = round(math.cos(math.radians(90) * i) + self.x)
+            newY = round(-math.sin(math.radians(90) * i) + self.y)
+
+            if 0 <= newX < neighborhood.width and 0 <= newY < neighborhood.height:
+                possibleNeighbors.append(neighborhood[newY][newX])
+
         return possibleNeighbors
 
     # Highlight self based on parameters
