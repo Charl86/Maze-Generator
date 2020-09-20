@@ -131,7 +131,3 @@ class Generator:
     @property
     def allCells(self):  # Return list of all cells in grid.
         return [cell for row in self.grid for cell in row]
-
-
-if __name__ == "__main__":
-    pass
