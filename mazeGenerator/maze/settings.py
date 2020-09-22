@@ -1,4 +1,5 @@
 import random
+import colorsys
 
 
 class PyGv:
@@ -22,7 +23,6 @@ class Colors:
         self.BLACK = (0, 0, 0)
         self.ASPHALT = (49, 49, 49)
         self.RED = (255, 0, 0)
-        self.RAND_COLOR = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), 200)
 
         self.currCellC = (100, 0, 255, 125)
         self.trailCellC = (255, 0, 255, 100)
@@ -33,6 +33,10 @@ class Colors:
                 self.__dict__[key.upper()] = kwargs[key]
             elif key in self.__dict__:
                 self.__dict__[key] = kwargs[key]
+
+    @property
+    def rand_color(self):
+        return tuple(round(255 * i) for i in colorsys.hsv_to_rgb(random.uniform(0, 1), 1, 1))
 
 
 class Settings:
