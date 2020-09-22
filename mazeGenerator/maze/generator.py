@@ -20,6 +20,10 @@ class Generator:
         self.canvasC = canvasC  # Color of canvas.
 
     def run(self):
+        # Initiate pygame module and set window caption.
+        pygame.init()
+        pygame.display.set_caption("Maze Generator")
+
         # Create a border with top-left coordinates (self.borderCoords, self.borderCoords).
         # Pass in settings.
         self.border = Border(
@@ -31,9 +35,6 @@ class Generator:
             self.border.horizon_length + 2 * self.mSettings.borderCoords
         self.mSettings.PyGv.HEIGHT = \
             self.border.vertical_length + 2 * self.mSettings.borderCoords
-
-        # Initiate pygame module.
-        pygame.init()
 
         # Create a Screen() object with width and height stored in mSettings.
         self.mSettings.PyGv.SCREEN = pygame.display.set_mode(

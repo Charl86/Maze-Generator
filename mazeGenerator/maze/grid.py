@@ -42,6 +42,9 @@ class Grid:
     def __getitem__(self, key):
         return self.elements[key]
 
-    # Define the 'in' operator for Grid object.
-    def __contains__(self, item):
-        return item in self.elements
+
+if __name__ == "__main__":
+    grid = Grid()
+    grid.elements = [[1, 2, 3], [5, 7, 11], [2, 4, 6], [16, 32, 64], [17, 18, 19]]
+
+    print([1, 2, 3] in grid)
