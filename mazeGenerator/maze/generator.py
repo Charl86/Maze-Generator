@@ -7,7 +7,7 @@ from mazeGenerator.maze.grid import Grid
 
 
 class Generator:
-    def __init__(self, mSettings, canvasC=(0, 0, 0)):
+    def __init__(self, mSettings, **kwargs):
         self.mSettings = mSettings  # Maze configurations.
         self.stack = Stack()  # An instance of MyStack class.
 
@@ -17,7 +17,13 @@ class Generator:
         self.backtracking = False  # If generator is backtracking.
         self.border = None  # Border object.
 
-        self.canvasC = canvasC  # Color of canvas.
+        self.canvasC = self.mSettings.Colors.WHITE  # Color of canvas.
+
+        for key in kwargs:
+            if key in self.__dict__:
+                self.__dict__[key] = kwargs[key]
+
+        self.kwargs = kwargs
 
     def run(self):
         # Initiate pygame module and set window caption.
@@ -45,7 +51,7 @@ class Generator:
         self.mSettings.PyGv.FPS = pygame.time.Clock()
 
         # Create all the cells with their respective rows and store them in self.grid.
-        self.grid.populateGrid(self.mSettings)
+        self.grid.populateGrid(self.mSettings, self.kwargs)
 
         # Disable the left wall of the first cell.
         self.grid[0][0].walls["left"].on = False

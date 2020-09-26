@@ -13,7 +13,10 @@ class App:
         self.tkinterWin = TkMenu(self.mSettings)
 
         # Initialize [Maze] Generator object.
-        self.generator = Generator(self.mSettings, self.mSettings.Colors.WHITE)
+        self.generator = Generator(
+            self.mSettings, canvasC=self.mSettings.Colors.WHITE, wallC=self.mSettings.Colors.BLACK,
+            trailCellC=(0, 150, 255), currCellC=(255, 0, 255), backtC=(255, 255, 0)
+        )
 
     # Runs app.
     def run(self, debug=False):
