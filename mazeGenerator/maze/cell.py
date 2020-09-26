@@ -20,8 +20,7 @@ class Cell:
         self.spaced_out_x = self.size * self.x + self.mSettings.borderCoords
         self.spaced_out_y = self.size * self.y + self.mSettings.borderCoords
 
-        # self.trailCellC = (0, 150, 255)  # Trail color.
-        self.trailCellC = self.mSettings.Colors.rand_color
+        self.trailCellC = (0, 150, 255)  # Trail color.
         self.currCellC = (255, 0, 255)  # Current cell color.
         self.backtC = (255, 255, 0)  # Backtracking color.
 
@@ -34,19 +33,19 @@ class Cell:
             "top": Wall(
                 (self.spaced_out_x, self.spaced_out_y),
                 (self.spaced_out_x + self.size, self.spaced_out_y),
-                self.mSettings),
+                self.mSettings, **kwargs),
             "right": Wall(
                 (self.spaced_out_x + self.size, self.spaced_out_y),
                 (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
-                self.mSettings),
+                self.mSettings, **kwargs),
             "bot": Wall(
                 (self.spaced_out_x + self.size, self.spaced_out_y + self.size),
                 (self.spaced_out_x, self.spaced_out_y + self.size),
-                self.mSettings),
+                self.mSettings, **kwargs),
             "left": Wall(
                 (self.spaced_out_x, self.spaced_out_y + self.size),
                 (self.spaced_out_x, self.spaced_out_y),
-                self.mSettings)
+                self.mSettings, **kwargs)
                 }
 
     # Draw cell walls

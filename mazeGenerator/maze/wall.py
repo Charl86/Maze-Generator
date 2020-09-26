@@ -16,8 +16,8 @@ class Wall:
         self.mSettings = mSettings
         self.on = on
 
-        # The color of the walls.
-        self.color = (0, 0, 0)
+        # The wall of the walls.
+        self.wallC = (0, 0, 0)
 
         for key in kwargs:
             if key in self.__dict__:
@@ -27,4 +27,4 @@ class Wall:
     def show(self, thickness):
         if self.on:  # If wall is turned on
             # Draw wall
-            pygame.draw.line(self.mSettings.PyGv.SCREEN, self.color, self.A, self.B, thickness)
+            pygame.draw.line(self.mSettings.PyGv.SCREEN, self.wallC, self.A, self.B, thickness)

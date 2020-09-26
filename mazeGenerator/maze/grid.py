@@ -6,14 +6,17 @@ class Grid:
     def __init__(self):
         self.elements = []  # 2D-Array.
 
-    def populateGrid(self, mSettings):
+    def populateGrid(self, mSettings, kwargs=None):
         nth_row = []  # Creation of the nth-array to-be-appended to 'the_grid'.
 
         # For row in number of rows:
         for row in range(mSettings.rows):
             for col in range(mSettings.cols):  # For col in number of cols:
-                # Create Cell object with coordinates (col, row) and pass in settings.
-                new_cell = Cell(col, row, mSettings)
+                if kwargs is not None:
+                    # Create Cell object with coordinates (col, row) and pass in settings.
+                    new_cell = Cell(col, row, mSettings, **kwargs)
+                else:
+                    new_cell = Cell(col, row, mSettings)
 
                 # Append new cell to current row.
                 nth_row.append(new_cell)
